@@ -38,26 +38,50 @@ export type ChartOptions = {
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss'],
 })
-export class DashboardComponent implements OnInit{
+export class DashboardComponent implements OnInit {
   rawMaterials: RawMaterial[] = [];
-  
+
   modalConfig: ModalConfig = {
     modalTitle: 'Modal title',
     dismissButtonLabel: 'Submit',
-    closeButtonLabel: 'Cancel',
+    closeButtonLabel: 'Cancelar',
   };
 
   @ViewChild('chart') chart: ChartComponent;
   public chartOptions: Partial<ChartOptions>;
 
-  telaAlgodonPrediccion: number[] =   [97, 253, 443, 518, 505, 222, 218, 440, 224, 437, 218, 206, 94, 504, 395, 428, 371, 475, 391, 286, 333];
-  telaAlgodonConsumoReal: number[] =  [71, 278, 430, 510, 491, 244, 219, 450, 244, 443, 236, 233, 112, 491, 400, 424, 391, 470, 395, 282];
-  telaSedaPrediccion: number[] =      [99, 116, 458, 522, 472, 498, 224, 117, 297, 284, 424, 410, 290, 173, 246, 187, 311, 272, 240, 404, 368];
-  telaSedaConsumoReal: number[] =     [94, 92, 445, 510, 450, 493, 220, 85, 311, 279, 430, 420, 309, 167, 245, 170, 353, 280, 232, 397];
-  telaLinoPrediccion: number[] =      [238, 302, 109, 182, 406, 164, 131, 355, 323, 242, 150, 414, 302, 111, 126, 236, 500, 420, 445, 236, 280];
-  telaLinoConsumoReal: number[] =     [214, 301, 65, 176, 395, 152, 118, 371, 333, 248, 137, 410, 330, 79, 116, 217, 504, 427, 440, 268];
-  telaEncajePrediccion: number[] =    [328, 469, 141, 143, 365, 290, 206, 239, 192, 494, 119, 167, 355, 121, 172, 386, 108, 143, 378, 411, 137];
-  telaEncajeConsumoReal: number[] =   [333, 458, 159, 143, 386, 303, 216, 242, 222, 496, 140, 168, 391, 118, 167, 397, 98, 152, 389, 423];
+  telaAlgodonPrediccion: number[] = [
+    97, 253, 443, 518, 505, 222, 218, 440, 224, 437, 218, 206, 94, 504, 395,
+    428, 371, 475, 391, 286, 333,
+  ];
+  telaAlgodonConsumoReal: number[] = [
+    71, 278, 430, 510, 491, 244, 219, 450, 244, 443, 236, 233, 112, 491, 400,
+    424, 391, 470, 395, 282,
+  ];
+  telaSedaPrediccion: number[] = [
+    99, 116, 458, 522, 472, 498, 224, 117, 297, 284, 424, 410, 290, 173, 246,
+    187, 311, 272, 240, 404, 368,
+  ];
+  telaSedaConsumoReal: number[] = [
+    94, 92, 445, 510, 450, 493, 220, 85, 311, 279, 430, 420, 309, 167, 245, 170,
+    353, 280, 232, 397,
+  ];
+  telaLinoPrediccion: number[] = [
+    238, 302, 109, 182, 406, 164, 131, 355, 323, 242, 150, 414, 302, 111, 126,
+    236, 500, 420, 445, 236, 280,
+  ];
+  telaLinoConsumoReal: number[] = [
+    214, 301, 65, 176, 395, 152, 118, 371, 333, 248, 137, 410, 330, 79, 116,
+    217, 504, 427, 440, 268,
+  ];
+  telaEncajePrediccion: number[] = [
+    328, 469, 141, 143, 365, 290, 206, 239, 192, 494, 119, 167, 355, 121, 172,
+    386, 108, 143, 378, 411, 137,
+  ];
+  telaEncajeConsumoReal: number[] = [
+    333, 458, 159, 143, 386, 303, 216, 242, 222, 496, 140, 168, 391, 118, 167,
+    397, 98, 152, 389, 423,
+  ];
 
   series: any[] = [
     {
@@ -71,9 +95,12 @@ export class DashboardComponent implements OnInit{
   ];
   selectedData: string = 'Tela de algodón';
 
-  constructor(private rawMaterialService: RawMaterialService, private cdr: ChangeDetectorRef, private route: ActivatedRoute,
-    private router: Router) {
-
+  constructor(
+    private rawMaterialService: RawMaterialService,
+    private cdr: ChangeDetectorRef,
+    private route: ActivatedRoute,
+    private router: Router
+  ) {
     this.chartOptions = {
       series: this.series,
       chart: {
@@ -97,7 +124,7 @@ export class DashboardComponent implements OnInit{
       },
       stroke: {
         curve: 'straight',
-        dashArray: [8, 0]
+        dashArray: [8, 0],
       },
       title: {
         text: 'Histórico vs Predicción',
@@ -114,7 +141,29 @@ export class DashboardComponent implements OnInit{
         size: 1,
       },
       xaxis: {
-        categories: ['Julio - 2022', 'Agosto - 2022', 'Septiembre - 2022', 'Octubre - 2022', 'Noviembre - 2022', 'Diciembre - 2022', 'Enero - 2023', 'Febrero - 2023', 'Marzo - 2023', 'Abril - 2023', 'Mayo - 2023', 'Junio - 2023', 'Julio - 2023', 'Agosto - 2023', 'Septiembre - 2023', 'Octubre - 2023', 'Noviembre - 2023', 'Diciembre - 2023', 'Enero - 2024', 'Febrero - 2024', 'Marzo - 2024'],
+        categories: [
+          'Julio - 2022',
+          'Agosto - 2022',
+          'Septiembre - 2022',
+          'Octubre - 2022',
+          'Noviembre - 2022',
+          'Diciembre - 2022',
+          'Enero - 2023',
+          'Febrero - 2023',
+          'Marzo - 2023',
+          'Abril - 2023',
+          'Mayo - 2023',
+          'Junio - 2023',
+          'Julio - 2023',
+          'Agosto - 2023',
+          'Septiembre - 2023',
+          'Octubre - 2023',
+          'Noviembre - 2023',
+          'Diciembre - 2023',
+          'Enero - 2024',
+          'Febrero - 2024',
+          'Marzo - 2024',
+        ],
         title: {
           text: 'FECHA',
         },
@@ -191,16 +240,16 @@ export class DashboardComponent implements OnInit{
         break;
       default:
         break;
-      }
-      this.chartOptions.series = this.series;
+    }
+    this.chartOptions.series = this.series;
   }
 
   loadRawMaterials(): void {
-    this.rawMaterialService.getRawMaterials().subscribe(
-      rawMaterialsResponse => {
+    this.rawMaterialService
+      .getRawMaterials()
+      .subscribe((rawMaterialsResponse) => {
         this.rawMaterials = rawMaterialsResponse;
         this.cdr.detectChanges();
-      }
-      );
+      });
   }
 }

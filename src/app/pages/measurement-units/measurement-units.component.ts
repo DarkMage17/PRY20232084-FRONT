@@ -7,34 +7,38 @@ import { MeasurementUnitService } from 'src/app/services/measurement-unit.servic
 @Component({
   selector: 'app-measurement-units',
   templateUrl: './measurement-units.component.html',
-  styleUrls: ['./measurement-units.component.scss']
+  styleUrls: ['./measurement-units.component.scss'],
 })
-export class MeasurementUnitsComponent implements OnInit{
+export class MeasurementUnitsComponent implements OnInit {
   measurementUnits: MeasurementUnit[] = [];
   selectedMeasurementUnit: MeasurementUnit | null = null;
 
   modalConfig: ModalConfig = {
     modalTitle: '¿Está seguro de que quiere eliminar la unidad de medida?',
     dismissButtonLabel: 'Sí, eliminar',
-    closeButtonLabel: 'Cancel',
+    closeButtonLabel: 'Cancelar',
     onDismiss: () => this.deleteMeasurementUnit(),
   };
   @ViewChild('modal') private modalComponent: ModalComponent;
 
-  constructor(private route: ActivatedRoute,
-    private router: Router,private measurementUnitService: MeasurementUnitService, private cdr: ChangeDetectorRef) { }
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private measurementUnitService: MeasurementUnitService,
+    private cdr: ChangeDetectorRef
+  ) {}
 
   ngOnInit(): void {
     this.loadMeasurementUnits();
   }
 
   loadMeasurementUnits(): void {
-    this.measurementUnitService.getMeasurementUnits().subscribe(
-      measurementUnitResponse => {
+    this.measurementUnitService
+      .getMeasurementUnits()
+      .subscribe((measurementUnitResponse) => {
         this.measurementUnits = measurementUnitResponse;
         this.cdr.detectChanges();
-      }
-      );
+      });
   }
 
   async openModal(measurementUnit: MeasurementUnit) {
@@ -45,12 +49,14 @@ export class MeasurementUnitsComponent implements OnInit{
   async deleteMeasurementUnit(): Promise<boolean> {
     if (!this.selectedMeasurementUnit) return false;
     try {
-      await this.measurementUnitService.deleteMeasurementUnit(this.selectedMeasurementUnit.id).toPromise();
+      await this.measurementUnitService
+        .deleteMeasurementUnit(this.selectedMeasurementUnit.id)
+        .toPromise();
       // Recargar las unidades de medida después de la eliminación.
       await this.loadMeasurementUnits();
       return true;
     } catch (error) {
-      console.error("Error deleting measurement unit:", error);
+      console.error('Error deleting measurement unit:', error);
       return false;
     } finally {
       this.selectedMeasurementUnit = null;
@@ -59,11 +65,11 @@ export class MeasurementUnitsComponent implements OnInit{
     }
   }
 
-  goEdit(id: number){
+  goEdit(id: number) {
     this.router.navigate([`measurement-units/edit/${id}`]);
   }
 
-  goCreate(){
-    this.router.navigate(['measurement-units/create'])
+  goCreate() {
+    this.router.navigate(['measurement-units/create']);
   }
 }
