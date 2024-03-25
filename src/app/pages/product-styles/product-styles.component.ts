@@ -12,6 +12,7 @@ import { Style } from 'src/app/models/Style';
 export class ProductStylesComponent implements OnInit {
   productStyles: Style[] = [];
   selectedStyle: Style | null = null;
+  isLoading: boolean = false;
 
   modalConfig: ModalConfig = {
     modalTitle: '¿Está seguro de que quiere eliminar el estilo?',
@@ -38,9 +39,19 @@ export class ProductStylesComponent implements OnInit {
   }
 
   loadStyles(): void {
-    this.productStyleService.getProductStyles().subscribe((styleResponse) => {
-      this.productStyles = styleResponse;
-      this.cdr.detectChanges();
+    this.isLoading = true;
+    this.productStyleService.getProductStyles().subscribe({
+      next: (styleResponse) => {
+        this.productStyles = styleResponse;
+        this.isLoading = false; // Finaliza la carga
+        this.cdr.detectChanges();
+      },
+      error: (error) => {
+        console.error('Error loading movements', error);
+      },
+      complete: () => {
+        this.isLoading = false; // Finaliza la carga
+      }
     });
   }
 

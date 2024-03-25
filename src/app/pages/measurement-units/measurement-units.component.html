@@ -1,3 +1,11 @@
+<div *ngIf="isLoading" class="text-center loading-overlay">
+  <div class="spinner-loader flex-column">
+    <span class="spinner-border text-primary" role="status"></span>
+</div>
+<span class="text-muted fs-6 fw-semibold mt-5">Cargando...</span>
+</div>
+
+<div *ngIf="!isLoading">
 <div class="card mb-5 mb-xl-8">
     <app-modal #modal [modalConfig]="modalConfig">
     </app-modal>
@@ -86,4 +94,4 @@
     </div>
     <!--begin::Body-->
   </div>
-  
+  </div>

@@ -12,6 +12,7 @@ import { ProductSizeService } from 'src/app/services/product-size.service';
 export class ProductSizesComponent implements OnInit {
   productSizes: Size[] = [];
   selectedSize: Size | null = null;
+  isLoading: boolean = false;
 
   modalConfig: ModalConfig = {
     modalTitle: '¿Está seguro de que quiere eliminar la talla?',
@@ -38,9 +39,19 @@ export class ProductSizesComponent implements OnInit {
   }
 
   loadSizes(): void {
-    this.productSizeService.getProductSizes().subscribe((sizeResponse) => {
-      this.productSizes = sizeResponse;
-      this.cdr.detectChanges();
+    this.isLoading = true;
+    this.productSizeService.getProductSizes().subscribe({
+      next: (productSizeResponse) => {
+        this.productSizes = productSizeResponse;
+        this.isLoading = false; // Finaliza la carga
+        this.cdr.detectChanges();
+      },
+      error: (error) => {
+        console.error('Error loading movements', error);
+      },
+      complete: () => {
+        this.isLoading = false; // Finaliza la carga
+      }
     });
   }
 

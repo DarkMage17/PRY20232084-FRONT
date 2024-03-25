@@ -12,6 +12,7 @@ import { MeasurementUnitService } from 'src/app/services/measurement-unit.servic
 export class MeasurementUnitsComponent implements OnInit {
   measurementUnits: MeasurementUnit[] = [];
   selectedMeasurementUnit: MeasurementUnit | null = null;
+  isLoading: boolean = false;
 
   modalConfig: ModalConfig = {
     modalTitle: '¿Está seguro de que quiere eliminar la unidad de medida?',
@@ -33,6 +34,20 @@ export class MeasurementUnitsComponent implements OnInit {
   }
 
   loadMeasurementUnits(): void {
+    this.isLoading = true;
+    this.measurementUnitService.getMeasurementUnits().subscribe({
+      next: (measurementUnitResponse) => {
+        this.measurementUnits = measurementUnitResponse;
+        this.isLoading = false; // Finaliza la carga
+        this.cdr.detectChanges();
+      },
+      error: (error) => {
+        console.error('Error loading movements', error);
+      },
+      complete: () => {
+        this.isLoading = false; // Finaliza la carga
+      }
+    });
     this.measurementUnitService
       .getMeasurementUnits()
       .subscribe((measurementUnitResponse) => {

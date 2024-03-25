@@ -12,6 +12,7 @@ import { RawMaterialService } from 'src/app/services/raw-material.service';
 export class RawMaterialsComponent implements OnInit {
   rawMaterials: RawMaterial[] = [];
   selectedRawMaterial: RawMaterial | null = null;
+  isLoading: boolean = false;
 
   modalConfig: ModalConfig = {
     modalTitle: '¿Está seguro de que quiere eliminar la materia prima?',
@@ -33,12 +34,20 @@ export class RawMaterialsComponent implements OnInit {
   }
 
   loadRawMaterials(): void {
-    this.rawMaterialService
-      .getRawMaterials()
-      .subscribe((rawMaterialsResponse) => {
+    this.isLoading = true;
+    this.rawMaterialService.getRawMaterials().subscribe({
+      next: (rawMaterialsResponse) => {
         this.rawMaterials = rawMaterialsResponse;
+        this.isLoading = false; // Finaliza la carga
         this.cdr.detectChanges();
-      });
+      },
+      error: (error) => {
+        console.error('Error loading movements', error);
+      },
+      complete: () => {
+        this.isLoading = false; // Finaliza la carga
+      }
+    });
   }
 
   async openModal(rawMaterial: RawMaterial) {

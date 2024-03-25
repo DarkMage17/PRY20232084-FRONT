@@ -12,6 +12,7 @@ import { ProductService } from 'src/app/services/product.service';
 export class ProductsComponent implements OnInit {
   products: Product[] = [];
   selectedProduct: Product | null = null;
+  isLoading: boolean = false;
 
   modalConfig: ModalConfig = {
     modalTitle: '¿Está seguro de que quiere eliminar el producto?',
@@ -33,9 +34,19 @@ export class ProductsComponent implements OnInit {
   }
 
   loadProducts(): void {
-    this.productService.getProducts().subscribe((productsResponse) => {
-      this.products = productsResponse;
-      this.cdr.detectChanges();
+    this.isLoading = true;
+    this.productService.getProducts().subscribe({
+      next: (productsResponse) => {
+        this.products = productsResponse;
+        this.isLoading = false; // Finaliza la carga
+        this.cdr.detectChanges();
+      },
+      error: (error) => {
+        console.error('Error loading movements', error);
+      },
+      complete: () => {
+        this.isLoading = false; // Finaliza la carga
+      }
     });
   }
 
