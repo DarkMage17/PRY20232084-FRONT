@@ -1,11 +1,11 @@
 export class createProductMovementDetail{
-    product_ID: number;
-    movement_ID: number;
+    productID: number;
+    movementID: number;
     quantity: number;
 
     constructor(){
-        this.product_ID = 0;
-        this.movement_ID = 0;
+        this.productID = 0;
+        this.movementID = 0;
         this.quantity = 0;
     }
 }
