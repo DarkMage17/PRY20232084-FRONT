@@ -1,4 +1,6 @@
 <div class="card mb-5 mb-xl-8">
+  <app-modal #modal [modalConfig]="modalConfig">
+  </app-modal>
   <!--begin::Header-->
   <div class="card-header border-0 pt-5">
     <h3 class="card-title align-items-start flex-column">
@@ -111,7 +113,7 @@
                 <a
                   class="btn btn-icon btn-bg-light btn-active-color-danger btn-sm"
                 >
-                  <i class="ki-duotone ki-trash fs-2"
+                  <i class="ki-duotone ki-trash fs-2" (click)="openModal(movement)"
                     ><span class="path1"></span><span class="path2"></span
                     ><span class="path3"></span><span class="path4"></span
                     ><span class="path5"></span
