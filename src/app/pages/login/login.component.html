@@ -1,7 +1,65 @@
-<form #registerForm="ngForm" (ngSubmit)="login()">
-    <label for="email">EMAIL</label>
-    <input type="email" [(ngModel)]="model.email" name="email" required>
-    <label for="password">CONTRASEÑA</label>
-    <input type="password" [(ngModel)]="model.password" name="password" required>
-    <button type="submit">Registrarse</button>
+<div class="bg-body d-flex flex-column align-items-stretch flex-center rounded-4 w-md-600px p-20">
+    <!--begin::Wrapper-->
+    <div class="d-flex flex-center flex-column flex-column-fluid px-lg-10 pb-15 pb-lg-20">
+        
+<!--begin::Form-->
+<form #registerForm="ngForm" (ngSubmit)="login()" class="form w-100 fv-plugins-bootstrap5 fv-plugins-framework" id="kt_sign_up_form" data-kt-redirect-url="/metronic8/demo1/authentication/layouts/creative/sign-in.html" action="#">
+<!--begin::Heading-->
+<div class="text-center mb-11">
+<!--begin::Title-->
+<h1 class="text-gray-900 fw-bolder mb-3">
+    INGRESA
+</h1>
+<!--end::Title-->
+
+</div>
+<!--begin::Heading-->
+
+<!--begin::Input group--->
+<div class="fv-row mb-8 fv-plugins-icon-container">
+<!--begin::Email-->
+<input type="text" placeholder="Correo" name="email" autocomplete="off" class="form-control bg-transparent" [(ngModel)]="model.email"> 
+<!--end::Email-->
+<div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div></div>
+<!--end::Input group--->
+
+<!--begin::Input group--->
+<div class="fv-row mb-8 fv-plugins-icon-container">    
+<!--begin::Repeat Password-->
+<input type="password" placeholder="Contraseña" name="confirm-password" autocomplete="off" class="form-control bg-transparent" [(ngModel)]="model.password">
+<!--end::Repeat Password-->
+<div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div></div>
+<!--end::Input group--->
+
+<!--begin::Submit button-->
+<div class="d-grid mb-10">
+<button type="submit" id="kt_sign_up_submit" class="btn btn-primary">
+    
+<!--begin::Indicator label-->
+<span class="indicator-label">
+Ingresa</span>
+<!--end::Indicator label-->
+
+<!--begin::Indicator progress-->
+<span class="indicator-progress">
+Please wait...    <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+</span>
+<!--end::Indicator progress-->        </button>
+</div>
+<!--end::Submit button-->
+
+<!--begin::Sign up-->
+<div class="text-gray-500 text-center fw-semibold fs-6">
+Todavía no tienes una cuenta?
+
+<a (click)="goToRegister()" class="link-primary fw-semibold">
+    Registrate
+</a>
+</div>
+<!--end::Sign up-->
 </form>
+<!--end::Form--> 
+
+    </div>
+    <!--end::Wrapper-->
+</div>

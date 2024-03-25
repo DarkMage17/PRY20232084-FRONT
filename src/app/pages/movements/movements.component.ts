@@ -14,7 +14,7 @@ export class MovementsComponent implements OnInit{
   selectedMovement: Movement | null = null;
 
   modalConfig: ModalConfig = {
-    modalTitle: '¿Está seguro de que quiere eliminar el producto?',
+    modalTitle: '¿Está seguro de que quiere eliminar el movimiento?',
     dismissButtonLabel: 'Sí, eliminar',
     closeButtonLabel: 'Cancel',
     onDismiss: () => this.deleteMovement(),
@@ -46,7 +46,7 @@ export class MovementsComponent implements OnInit{
     if (!this.selectedMovement) return false;
     try {
       await this.movementService.deleteMovement(this.selectedMovement.id).toPromise();
-      // Recargar los productos después de la eliminación.
+      // Recargar los movimientos después de la eliminación.
       await this.loadMovements();
       return true;
     } catch (error) {
@@ -54,7 +54,7 @@ export class MovementsComponent implements OnInit{
       return false;
     } finally {
       this.selectedMovement = null;
-      // Forzar la detección de cambios después de eliminar el producto.
+      // Forzar la detección de cambios después de eliminar el movimiento.
       this.cdr.detectChanges();
     }
   }

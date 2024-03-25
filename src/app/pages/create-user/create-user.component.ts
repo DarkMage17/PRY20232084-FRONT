@@ -26,8 +26,12 @@ export class CreateUserComponent {
   register() {
     this.authService.register(this.model).subscribe(
       response => {
-        this.router.navigate(['dashboard']);
+        this.router.navigate(['login']);
       }
     );
+  }
+
+  goToLogin() {
+    this.router.navigate(['login']);
   }
 }
