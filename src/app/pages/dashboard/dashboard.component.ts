@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { ModalConfig, ModalComponent } from '../../_metronic/partials';
 import { AuthService } from 'src/app/services/auth.service';
 
@@ -16,6 +16,8 @@ import {
   ApexLegend,
 } from 'ng-apexcharts';
 import { ActivatedRoute, Router } from '@angular/router';
+import { RawMaterialService } from 'src/app/services/raw-material.service';
+import { RawMaterial } from 'src/app/models/RawMaterial';
 
 export type ChartOptions = {
   series: ApexAxisChartSeries;
@@ -37,7 +39,7 @@ export type ChartOptions = {
   styleUrls: ['./dashboard.component.scss'],
 })
 export class DashboardComponent implements OnInit{
-  currentUser: any;
+  rawMaterials: RawMaterial[] = [];
   
   modalConfig: ModalConfig = {
     modalTitle: 'Modal title',
@@ -69,7 +71,7 @@ export class DashboardComponent implements OnInit{
   ];
   selectedData: string = 'Tela de algodón';
 
-  constructor(private authService: AuthService, private route: ActivatedRoute,
+  constructor(private rawMaterialService: RawMaterialService, private cdr: ChangeDetectorRef, private route: ActivatedRoute,
     private router: Router) {
 
     this.chartOptions = {
@@ -134,6 +136,7 @@ export class DashboardComponent implements OnInit{
     };
   }
   ngOnInit(): void {
+    this.loadRawMaterials();
   }
 
   updateChart(): void {
@@ -190,5 +193,14 @@ export class DashboardComponent implements OnInit{
         break;
       }
       this.chartOptions.series = this.series;
+  }
+
+  loadRawMaterials(): void {
+    this.rawMaterialService.getRawMaterials().subscribe(
+      rawMaterialsResponse => {
+        this.rawMaterials = rawMaterialsResponse;
+        this.cdr.detectChanges();
+      }
+      );
   }
 }
