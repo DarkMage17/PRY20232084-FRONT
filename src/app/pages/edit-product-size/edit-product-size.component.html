@@ -1,0 +1,29 @@
+<div>
+    <form
+      class="text-center border border-light p-5 col-lg-6 offset-lg-3"
+      (ngSubmit)="updateProductSize()"
+    >
+      <p class="h4 mb-4">EDITAR TALLA</p>
+      <div class="form-group col-md-12">
+        <label for="quantity">NOMBRE</label>
+        <input
+          type="text"
+          class="form-control"
+          id="name"
+          name="name"
+          placeholder="Nombre"
+          required
+          [(ngModel)]="editProductSize.name"
+        />
+      </div>
+
+      <br />
+      <div class="form-group col-md-12">
+        <button type="submit" class="btn btn-primary">GUARDAR CAMBIOS</button>
+      </div>
+      <br />
+      <div class="form-group col-md-12">
+        <button (click)="goBack()" class="btn btn-secondary">ATRÁS</button>
+      </div>
+    </form>
+  </div>

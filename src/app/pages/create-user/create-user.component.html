@@ -1,0 +1,13 @@
+<form #registerForm="ngForm" (ngSubmit)="register()">
+    <label for="email">EMAIL</label>
+    <input type="email" [(ngModel)]="model.email" name="email" required>
+    <label for="password">CONTRASEÑA</label>
+    <input type="password" [(ngModel)]="model.password" name="password" required>
+    <label for="name">NOMBRE</label>
+    <input type="text" [(ngModel)]="model.name" name="name" required>
+    <label for="phone">CELULAR</label>
+    <input type="text" [(ngModel)]="model.phone" name="phone" required>
+    <label for="enterprise">COMPAÑIA</label>
+    <input type="text" [(ngModel)]="model.enterprise" name="enterprise" required>
+    <button type="submit">Registrarse</button>
+</form>

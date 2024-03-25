@@ -1,0 +1,35 @@
+<label class="control-label">MATERIA PRIMA</label>
+<p>Email: {{ currentUser?.email }}</p>
+<button (click)="onLogout()">Logout</button>
+<select
+  class="form-control"
+  [(ngModel)]="selectedData"
+  name="selectedRawMaterial"
+  (change)="updateChart()"
+>
+  <option value="Tela de algodón">Tela de algodón</option>
+  <option value="Tela de seda">Tela de seda</option>
+  <option value="Tela de lino">Tela de lino</option>
+  <option value="Tela de encaje">Tela de encaje</option>
+</select>
+
+<br>
+<br>
+
+<div>
+  <div id="chart">
+    <apx-chart
+      [series]="series"
+      [chart]="chartOptions.chart!"
+      [xaxis]="chartOptions.xaxis!"
+      [stroke]="chartOptions.stroke!"
+      [colors]="chartOptions.colors!"
+      [dataLabels]="chartOptions.dataLabels!"
+      [legend]="chartOptions.legend!"
+      [markers]="chartOptions.markers!"
+      [grid]="chartOptions.grid!"
+      [yaxis]="chartOptions.yaxis!"
+      [title]="chartOptions.title!"
+    ></apx-chart>
+  </div>
+</div>
