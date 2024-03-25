@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { createRawMaterial } from 'src/app/models/CreateRawMaterial';
 import { MeasurementUnit } from 'src/app/models/MeasurementUnit';
 import { RawMaterial } from 'src/app/models/RawMaterial';
+import { AuthService } from 'src/app/services/auth.service';
 import { MeasurementUnitService } from 'src/app/services/measurement-unit.service';
 import { RawMaterialService } from 'src/app/services/raw-material.service';
 
@@ -14,17 +15,19 @@ import { RawMaterialService } from 'src/app/services/raw-material.service';
 export class CreateRawMaterialComponent implements OnInit{
   createRawMaterial: createRawMaterial = new createRawMaterial();
   measurementUnits: MeasurementUnit[] = [];
+  loggedUser: any;
 
-  constructor(private route: ActivatedRoute,
+  constructor(private authService: AuthService ,private route: ActivatedRoute,
     private router: Router, private rawMaterialService: RawMaterialService, private measurementService: MeasurementUnitService, private cdr: ChangeDetectorRef) { }
     
   ngOnInit(): void {
+    this.authService.currentUser.subscribe(x => this.loggedUser = x);
     this.cdr.detectChanges();
     this.loadData();
   }
 
   insertRawMaterial(){
-    this.createRawMaterial.createdBy = 'd398c3e8-44e0-43fe-923c-cea0be963670';
+    this.createRawMaterial.createdBy = this.loggedUser.id;
     console.log(this.createRawMaterial);
     this.rawMaterialService.createRawMaterial(this.createRawMaterial)
     .subscribe(datos=>{

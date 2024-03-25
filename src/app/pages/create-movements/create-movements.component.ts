@@ -3,7 +3,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CreateMovement } from 'src/app/models/CreateMovement';
 import { createProductMovementDetail } from 'src/app/models/CreateProductMovementDetail';
 import { createRawMaterialMovementDetail } from 'src/app/models/CreateRawMaterialMovementDetail';
-import { Movement } from 'src/app/models/Movement';
 import { Product } from 'src/app/models/Product';
 import { RawMaterial } from 'src/app/models/RawMaterial';
 import { AuthService } from 'src/app/services/auth.service';

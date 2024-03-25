@@ -1,6 +1,7 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CreateProductStyle } from 'src/app/models/CreateProductStyle';
+import { AuthService } from 'src/app/services/auth.service';
 import { ProductStyleService } from 'src/app/services/product-style.service';
 
 @Component({
@@ -10,15 +11,17 @@ import { ProductStyleService } from 'src/app/services/product-style.service';
 })
 export class CreateProductStyleComponent implements OnInit{
   createProductStyle: CreateProductStyle = new CreateProductStyle();
+  loggedUser: any;
 
-  constructor(private route: ActivatedRoute,
+  constructor(private authService: AuthService ,private route: ActivatedRoute,
     private router: Router, private productStyleService: ProductStyleService, private cdr: ChangeDetectorRef) { }
     
   ngOnInit(): void {
+    this.authService.currentUser.subscribe(x => this.loggedUser = x);
   }
 
   insertProductStyle(){
-    this.createProductStyle.createdBy = 'd398c3e8-44e0-43fe-923c-cea0be963670';
+    this.createProductStyle.createdBy = this.loggedUser.id;
     this.productStyleService.createProductStyle(this.createProductStyle)
     .subscribe(datos=>{
       console.log(datos), (error: any)=>console.log(error)

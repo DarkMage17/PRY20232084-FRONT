@@ -1,6 +1,7 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CreateProductSize } from 'src/app/models/CreateProductSize';
+import { AuthService } from 'src/app/services/auth.service';
 import { ProductSizeService } from 'src/app/services/product-size.service';
 
 @Component({
@@ -10,15 +11,17 @@ import { ProductSizeService } from 'src/app/services/product-size.service';
 })
 export class CreateProductSizeComponent implements OnInit{
   createProductSize: CreateProductSize = new CreateProductSize();
+  loggedUser: any;
 
-  constructor(private route: ActivatedRoute,
+  constructor(private authService: AuthService, private route: ActivatedRoute,
     private router: Router, private productSizeService: ProductSizeService, private cdr: ChangeDetectorRef) { }
     
   ngOnInit(): void {
+    this.authService.currentUser.subscribe(x => this.loggedUser = x);
   }
 
   insertProductSize(){
-    this.createProductSize.createdBy = 'd398c3e8-44e0-43fe-923c-cea0be963670';
+    this.createProductSize.createdBy = this.loggedUser.id;
     this.productSizeService.createProductSize(this.createProductSize)
     .subscribe(datos=>{
       console.log(datos), (error: any)=>console.log(error)

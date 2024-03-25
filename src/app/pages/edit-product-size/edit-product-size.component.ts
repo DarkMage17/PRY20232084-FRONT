@@ -1,6 +1,7 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CreateProductSize } from 'src/app/models/CreateProductSize';
+import { AuthService } from 'src/app/services/auth.service';
 import { ProductSizeService } from 'src/app/services/product-size.service';
 
 @Component({
@@ -11,8 +12,10 @@ import { ProductSizeService } from 'src/app/services/product-size.service';
 export class EditProductSizeComponent implements OnInit{
   editProductSize: CreateProductSize = new CreateProductSize();
   productSizeId: number | null = null;
+  loggedUser: any;
 
   constructor(
+    private authService: AuthService,
     private route: ActivatedRoute,
     private router: Router,
     private productSizeService: ProductSizeService,
@@ -20,6 +23,7 @@ export class EditProductSizeComponent implements OnInit{
   ) {}
 
   ngOnInit(): void {
+    this.authService.currentUser.subscribe(x => this.loggedUser = x);
     this.productSizeId = this.route.snapshot.paramMap.get('id') as number | null;
     if (this.productSizeId) {
       this.loadProductSizeDetails(this.productSizeId);
@@ -37,7 +41,7 @@ export class EditProductSizeComponent implements OnInit{
   }
 
   updateProductSize(): void {
-    this.editProductSize.createdBy = 'd398c3e8-44e0-43fe-923c-cea0be963670';
+    this.editProductSize.createdBy = this.loggedUser.id;
     this.productSizeService.updateProductSize(this.productSizeId!, this.editProductSize).subscribe(
       response => {
         this.router.navigate(['product-sizes']);
