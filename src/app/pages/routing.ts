@@ -18,6 +18,8 @@ import { ProductStylesComponent } from './product-styles/product-styles.componen
 import { CreateProductStyleComponent } from './create-product-style/create-product-style.component';
 import { EditProductStyleComponent } from './edit-product-style/edit-product-style.component';
 import { LoginComponent } from './login/login.component';
+import { AuthGuard } from '../auth.guard';
+import { DashboardComponent } from './dashboard/dashboard.component';
 
 const Routing: Routes = [
   {
@@ -32,7 +34,7 @@ const Routing: Routes = [
   },
   {
     path: '',
-    redirectTo: '/dashboard',
+    redirectTo: '/login',
     pathMatch: 'full',
   },
   {
@@ -41,71 +43,88 @@ const Routing: Routes = [
   },
   {
     path: 'movements',
-    component: MovementsComponent
+    component: MovementsComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: 'movements/create',
-    component: CreateMovementsComponent
+    component: CreateMovementsComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: 'raw-materials',
-    component: RawMaterialsComponent
+    component: RawMaterialsComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: 'raw-materials/create',
-    component: CreateRawMaterialComponent
+    component: CreateRawMaterialComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: 'raw-materials/edit/:id',
-    component: EditRawMaterialComponent
+    component: EditRawMaterialComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: 'products',
     component: ProductsComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: 'products/create',
-    component: CreateProductComponent
+    component: CreateProductComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: 'products/edit/:id',
-    component: EditProductComponent
+    component: EditProductComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: 'product-sizes',
-    component: ProductSizesComponent
+    component: ProductSizesComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: 'product-sizes/create',
-    component: CreateProductSizeComponent
+    component: CreateProductSizeComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: 'product-sizes/edit/:id',
-    component: EditProductSizeComponent
+    component: EditProductSizeComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: 'product-styles',
-    component: ProductStylesComponent
+    component: ProductStylesComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: 'product-styles/create',
-    component: CreateProductStyleComponent
+    component: CreateProductStyleComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: 'product-styles/edit/:id',
-    component: EditProductStyleComponent
+    component: EditProductStyleComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: 'measurement-units',
-    component: MeasurementUnitsComponent
+    component: MeasurementUnitsComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: 'measurement-units/create',
-    component: CreateMeasurementUnitsComponent
+    component: CreateMeasurementUnitsComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: 'measurement-units/edit/:id',
-    component: EditMeasurementUnitsComponent
+    component: EditMeasurementUnitsComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: 'register',
@@ -114,6 +133,11 @@ const Routing: Routes = [
   {
     path: 'login',
     component: LoginComponent
+  },
+  {
+    path: 'dashboard',
+    component: DashboardComponent,
+    canActivate: [AuthGuard]
   }
 ];
 

@@ -134,7 +134,6 @@ export class DashboardComponent implements OnInit{
     };
   }
   ngOnInit(): void {
-    this.authService.currentUser.subscribe(x => this.currentUser = x);
   }
 
   updateChart(): void {
@@ -191,10 +190,5 @@ export class DashboardComponent implements OnInit{
         break;
       }
       this.chartOptions.series = this.series;
-  }
-
-  onLogout() {
-    this.authService.logout();
-    this.router.navigate(['login']);
   }
 }
