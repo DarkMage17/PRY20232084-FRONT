@@ -30,6 +30,10 @@ export class UserInnerComponent implements OnInit, OnDestroy {
     this.router.navigate(['login']);
   }
 
+  goToProfile() {
+    this.router.navigate(['profile']);
+  }
+
   ngOnDestroy() {
     this.unsubscribe.forEach((sb) => sb.unsubscribe());
   }

@@ -35,6 +35,7 @@ import { ProductStylesComponent } from './pages/product-styles/product-styles.co
 import { CreateProductStyleComponent } from './pages/create-product-style/create-product-style.component';
 import { EditProductStyleComponent } from './pages/edit-product-style/edit-product-style.component';
 import { LoginComponent } from './pages/login/login.component';
+import { ProfileComponent } from './pages/profile/profile.component';
 // #fake-end#
 
 function appInitializer(authService: AuthService) {
@@ -47,7 +48,7 @@ function appInitializer(authService: AuthService) {
 }
 
 @NgModule({
-    declarations: [AppComponent, MovementsComponent, CreateMovementsComponent, RawMaterialsComponent, CreateRawMaterialComponent, ProductsComponent, CreateProductComponent, CreateUserComponent, EditProductComponent, EditRawMaterialComponent, MeasurementUnitsComponent, CreateMeasurementUnitsComponent, EditMeasurementUnitsComponent, ProductSizesComponent, CreateProductSizeComponent, EditProductSizeComponent, ProductStylesComponent, CreateProductStyleComponent, EditProductStyleComponent, LoginComponent],
+    declarations: [AppComponent, MovementsComponent, CreateMovementsComponent, RawMaterialsComponent, CreateRawMaterialComponent, ProductsComponent, CreateProductComponent, CreateUserComponent, EditProductComponent, EditRawMaterialComponent, MeasurementUnitsComponent, CreateMeasurementUnitsComponent, EditMeasurementUnitsComponent, ProductSizesComponent, CreateProductSizeComponent, EditProductSizeComponent, ProductStylesComponent, CreateProductStyleComponent, EditProductStyleComponent, LoginComponent, ProfileComponent],
     providers: [
         {
             provide: APP_INITIALIZER,

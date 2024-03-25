@@ -20,6 +20,7 @@ import { EditProductStyleComponent } from './edit-product-style/edit-product-sty
 import { LoginComponent } from './login/login.component';
 import { AuthGuard } from '../auth.guard';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { ProfileComponent } from './profile/profile.component';
 
 const Routing: Routes = [
   {
@@ -137,6 +138,11 @@ const Routing: Routes = [
   {
     path: 'dashboard',
     component: DashboardComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'profile',
+    component: ProfileComponent,
     canActivate: [AuthGuard]
   }
 ];

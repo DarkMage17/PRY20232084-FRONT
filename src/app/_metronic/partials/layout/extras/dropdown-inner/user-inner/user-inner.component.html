@@ -19,14 +19,14 @@
   <div class="separator my-2"></div>
 
   <div class="menu-item px-5">
-    <a routerLink="/crafted/pages/profile" class="menu-link px-5">
-      My Profile
+    <a routerLink="/crafted/pages/profile" class="menu-link px-5" (click)="goToProfile()">
+      Mi perfil
     </a>
   </div>
 
   <div class="separator my-2"></div>
 
   <div class="menu-item px-5">
-    <a (click)="logout()" class="menu-link px-5 cursor-pointer"> Sign Out </a>
+    <a (click)="logout()" class="menu-link px-5 cursor-pointer"> Salir </a>
   </div>
 </ng-container>
