@@ -12,6 +12,7 @@ import { ModalComponent, ModalConfig } from 'src/app/_metronic/partials';
 export class MovementsComponent implements OnInit {
   movements: Movement[] = [];
   selectedMovement: Movement | null = null;
+  isLoading: boolean = false;
 
   modalConfig: ModalConfig = {
     modalTitle: '¿Está seguro de que quiere eliminar el movimiento?',
@@ -33,9 +34,19 @@ export class MovementsComponent implements OnInit {
   }
 
   loadMovements(): void {
-    this.movementService.getMovements().subscribe((movementsResponse) => {
-      this.movements = movementsResponse;
-      this.cdr.detectChanges();
+    this.isLoading = true; // Inicia la carga
+    this.movementService.getMovements().subscribe({
+      next: (movementsResponse) => {
+        this.movements = movementsResponse;
+        this.isLoading = false; // Finaliza la carga
+        this.cdr.detectChanges();
+      },
+      error: (error) => {
+        console.error('Error loading movements', error);
+      },
+      complete: () => {
+        this.isLoading = false; // Finaliza la carga
+      }
     });
   }
 
