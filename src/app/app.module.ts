@@ -11,7 +11,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AuthService } from './modules/auth/services/auth.service';
 import { environment } from 'src/environments/environment';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ModalsModule } from 'src/app/_metronic/partials/layout/modals/modals.module'
 // #fake-start#
 import { FakeAPIService } from './_fake/fake-api.service';
@@ -63,6 +63,7 @@ function appInitializer(authService: AuthService) {
         BrowserAnimationsModule,
         TranslateModule.forRoot(),
         ModalsModule,
+        ReactiveFormsModule,
         FormsModule,
         HttpClientModule,
         ClipboardModule,

@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
-import { ModalConfig, ModalComponent } from '../../_metronic/partials';
+import { ModalComponent, ModalConfig } from 'src/app/_metronic/partials';
 import { AuthService } from 'src/app/services/auth.service';
 
 import {
@@ -40,12 +40,6 @@ export type ChartOptions = {
 })
 export class DashboardComponent implements OnInit {
   rawMaterials: RawMaterial[] = [];
-
-  modalConfig: ModalConfig = {
-    modalTitle: 'Modal title',
-    dismissButtonLabel: 'Submit',
-    closeButtonLabel: 'Cancelar',
-  };
 
   @ViewChild('chart') chart: ChartComponent;
   public chartOptions: Partial<ChartOptions>;
@@ -187,6 +181,8 @@ export class DashboardComponent implements OnInit {
   ngOnInit(): void {
     this.loadRawMaterials();
   }
+
+
 
   updateChart(): void {
     switch (this.selectedData) {
