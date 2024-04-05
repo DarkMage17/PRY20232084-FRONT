@@ -3,7 +3,6 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { createRawMaterial } from 'src/app/models/CreateRawMaterial';
 import { MeasurementUnit } from 'src/app/models/MeasurementUnit';
-import { RawMaterial } from 'src/app/models/RawMaterial';
 import { AuthService } from 'src/app/services/auth.service';
 import { MeasurementUnitService } from 'src/app/services/measurement-unit.service';
 import { RawMaterialService } from 'src/app/services/raw-material.service';
@@ -14,62 +13,75 @@ import Swal from 'sweetalert2';
   templateUrl: './create-raw-material.component.html',
   styleUrls: ['./create-raw-material.component.scss']
 })
-export class CreateRawMaterialComponent implements OnInit{
+export class CreateRawMaterialComponent implements OnInit {
   createRawMaterial: createRawMaterial = new createRawMaterial();
   measurementUnits: MeasurementUnit[] = [];
   loggedUser: any;
 
-  sendRequired() {
-    Swal.fire('Error', 'Complete los campos requeridos', 'error');
-  }
-
   form: FormGroup;
 
-  constructor(private authService: AuthService ,private route: ActivatedRoute, private formBuilder: FormBuilder,
-    private router: Router, private rawMaterialService: RawMaterialService, private measurementService: MeasurementUnitService, private cdr: ChangeDetectorRef) {
-      this.form = this.formBuilder.group({
-        name: ['', [Validators.required, Validators.pattern('[a-zA-Z ]*')]],
-        brand: ['', [Validators.required, Validators.pattern('[a-zA-Z0-9. ]*')]],
-        color: ['', [Validators.required, Validators.pattern('[a-zA-Z ]*')]],
-        description: ['', [Validators.required, Validators.pattern('[a-zA-Z0-9. ]*')]]
-      });
-    }
-    
-  ngOnInit(): void {
-    this.authService.currentUser.subscribe(x => this.loggedUser = x);
-    this.cdr.detectChanges();
-    this.loadData();
-  }
-
-  insertRawMaterial(){
-    this.createRawMaterial.createdBy = this.loggedUser.id;
-    console.log(this.createRawMaterial);
-    this.rawMaterialService.createRawMaterial(this.createRawMaterial)
-    .subscribe(datos=>{
-      console.log(datos), (error: any)=>console.log(error)
-      this.router.navigate(['raw-materials']);
+  constructor(
+    private authService: AuthService,
+    private route: ActivatedRoute,
+    private formBuilder: FormBuilder,
+    private router: Router,
+    private rawMaterialService: RawMaterialService,
+    private measurementService: MeasurementUnitService,
+    private cdr: ChangeDetectorRef
+  ) {
+    this.form = this.formBuilder.group({
+      name: ['', [Validators.required, Validators.pattern('[a-zA-Z0-9. ]*')]],
+      brandName: ['', [Validators.required, Validators.pattern('[a-zA-Z0-9. ]*')]],
+      color: ['', [Validators.required, Validators.pattern('[a-zA-Z ]*')]],
+      description: ['', [Validators.required, Validators.pattern('[a-zA-Z0-9. ]*')]],
+      quantity: ['',[]],
+      measurementUnit_ID: ['',[]],
     });
   }
 
-  onSubmit() {
-    // Aquí puedes enviar los datos del formulario o realizar acciones adicionales
-    if (this.form.invalid) {
-      this.sendRequired();
-    }
-    this.insertRawMaterial();
+  ngOnInit(): void {
+    this.authService.currentUser.subscribe(x => this.loggedUser = x);
+    this.loadData();
   }
 
+  insertRawMaterial(): void {
+    this.createRawMaterial.createdBy = this.loggedUser.id;
+    this.rawMaterialService.createRawMaterial(this.createRawMaterial)
+      .subscribe(
+        datos => {
+          this.router.navigate(['raw-materials']);
+        },
+        (error: any) => console.log(error)
+      );
+  }
+
+  onSubmit(): void {
+    if (this.form.invalid) {
+      this.sendRequired();
+    } else {
+      this.createRawMaterial = this.form.value;
+      this.insertRawMaterial();
+      this.sendSuccess();
+    }
+  }
 
   loadData(): void {
     this.measurementService.getMeasurementUnits().subscribe(
       rawMaterialsResponse => {
         this.measurementUnits = rawMaterialsResponse;
-        this.cdr.detectChanges();
       }
-      );
+    );
   }
 
-  goBack(){
+  sendRequired(): void {
+    Swal.fire('Error', 'Complete los campos requeridos', 'error');
+  }
+
+  sendSuccess(): void{
+    Swal.fire('Registro exitoso', 'La materia prima se registró exitosamente', 'success');
+  }
+
+  goBack(): void {
     this.router.navigate(['raw-materials']);
   }
 }
