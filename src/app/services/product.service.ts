@@ -15,7 +15,7 @@ export class ProductService {
   }
 
   insertProduct(product: any): Observable<any>{
-    return this.http.post(`${this.baseUrl}`, product);
+    return this.http.post(`${this.baseUrl}/OldPostProduct`, product);
   }
 
   deleteProduct(id: number): Observable<any>{
