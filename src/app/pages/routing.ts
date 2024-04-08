@@ -29,20 +29,18 @@ const Routing: Routes = [
     path: 'dashboard',
     loadChildren: () =>
       import('./dashboard/dashboard.module').then((m) => m.DashboardModule),
+    canActivate: [AuthGuard]
   },
   {
     path: 'builder',
     loadChildren: () =>
       import('./builder/builder.module').then((m) => m.BuilderModule),
+    canActivate: [AuthGuard]
   },
   {
     path: '',
     redirectTo: '/login',
     pathMatch: 'full',
-  },
-  {
-    path: '**',
-    redirectTo: 'error/404',
   },
   {
     path: 'movements',
@@ -156,7 +154,11 @@ const Routing: Routes = [
     path: 'withdrawal',
     component: WithdrawalComponent,
     canActivate: [AuthGuard]
-  }
+  },
+  {
+    path: '**',
+    redirectTo: 'error/404',
+  },
 ];
 
 export { Routing };
