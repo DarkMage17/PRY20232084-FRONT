@@ -51,11 +51,11 @@ export class CreateProductComponent implements OnInit {
 
   createForm(): void {
     this.createProductForm = this.formBuilder.group({
-      name: ['', Validators.required],
-      description: ['', Validators.required],
-      stock: ['', Validators.required],
-      size_ID: ['', Validators.required],
-      style_ID: ['', Validators.required]
+      name: ['', [Validators.required, Validators.pattern('[a-zA-Z0-9. ]*')]],
+      description: ['', [Validators.required, Validators.pattern('[a-zA-Z0-9., ]*')]],
+      stock: ['', [Validators.required]],
+      size_ID: ['', [Validators.required]],
+      style_ID: ['', [Validators.required]]
     });
   }
 

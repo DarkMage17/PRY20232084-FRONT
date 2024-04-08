@@ -26,9 +26,8 @@ export class CreateMeasurementUnitsComponent implements OnInit {
     private cdr: ChangeDetectorRef
   ) {
     this.form = this.formBuilder.group({
-      measurementUnitId: [''],
       name: ['', [Validators.required, Validators.pattern('[a-zA-Z ]*')]],
-      abbreviation: ['', [Validators.required, Validators.pattern('[a-zA-Z ]*')]]
+      abbreviation: ['', [Validators.required, Validators.pattern('[a-zA-Z. ]*')]]
     });
   }
 

@@ -32,8 +32,8 @@ export class CreateRawMaterialComponent implements OnInit {
     this.form = this.formBuilder.group({
       name: ['', [Validators.required, Validators.pattern('[a-zA-Z0-9. ]*')]],
       brandName: ['', [Validators.required, Validators.pattern('[a-zA-Z0-9. ]*')]],
-      color: ['', [Validators.required, Validators.pattern('[a-zA-Z ]*')]],
-      description: ['', [Validators.required, Validators.pattern('[a-zA-Z0-9. ]*')]],
+      color: ['', [Validators.required, Validators.pattern('[a-zA-Z0-9. ]*')]],
+      description: ['', [Validators.required, Validators.pattern('[a-zA-Z0-9., ]*')]],
       quantity: ['',[]],
       measurementUnit_ID: ['',[]],
     });

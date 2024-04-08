@@ -19,7 +19,7 @@
       <input type="text" class="form-control" id="abbreviation" formControlName="abbreviation" placeholder="Abreviación" />
       <div *ngIf="form.get('abbreviation')?.invalid && (form.get('abbreviation')?.dirty || form.get('abbreviation')?.touched)" class="text-danger">
         <div *ngIf="form.get('abbreviation')?.errors?.required">La abreviación es requerida.</div>
-        <div *ngIf="form.get('abbreviation')?.errors?.pattern">La abreviación solo puede contener letras.</div>
+        <div *ngIf="form.get('abbreviation')?.errors?.pattern">La abreviación solo puede contener letras y puntos</div>
       </div>
     </div>
 
