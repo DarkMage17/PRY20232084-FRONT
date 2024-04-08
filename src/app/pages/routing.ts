@@ -21,6 +21,8 @@ import { LoginComponent } from './login/login.component';
 import { AuthGuard } from '../auth.guard';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ProfileComponent } from './profile/profile.component';
+import { IncomeComponent } from './income/income.component';
+import { WithdrawalComponent } from './withdrawal/withdrawal.component';
 
 const Routing: Routes = [
   {
@@ -143,6 +145,16 @@ const Routing: Routes = [
   {
     path: 'profile',
     component: ProfileComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'income',
+    component: IncomeComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'withdrawal',
+    component: WithdrawalComponent,
     canActivate: [AuthGuard]
   }
 ];

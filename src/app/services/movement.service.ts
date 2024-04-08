@@ -14,6 +14,14 @@ export class MovementService {
     return this.http.get(`${this.baseURL}`);
   }
 
+  getIncomeMovements(): Observable<any>{
+    return this.http.get(`${this.baseURL}/GetIncomeMovements`);
+  }
+
+  getWithdrawalMovements(): Observable<any>{
+    return this.http.get(`${this.baseURL}/GetWithdrawalMovements`);
+  }
+
   getMovement(id: number): Observable<any>{
     return this.http.get(`${this.baseURL}/${id}`);
   }

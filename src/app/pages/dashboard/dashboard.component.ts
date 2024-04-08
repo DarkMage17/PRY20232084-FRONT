@@ -136,8 +136,6 @@ export class DashboardComponent implements OnInit {
       },
       xaxis: {
         categories: [
-          'Julio - 2022',
-          'Agosto - 2022',
           'Septiembre - 2022',
           'Octubre - 2022',
           'Noviembre - 2022',
@@ -157,6 +155,8 @@ export class DashboardComponent implements OnInit {
           'Enero - 2024',
           'Febrero - 2024',
           'Marzo - 2024',
+          'Abril - 2024',
+          'Mayo - 2024',
         ],
         title: {
           text: 'FECHA',

@@ -36,6 +36,8 @@ import { CreateProductStyleComponent } from './pages/create-product-style/create
 import { EditProductStyleComponent } from './pages/edit-product-style/edit-product-style.component';
 import { LoginComponent } from './pages/login/login.component';
 import { ProfileComponent } from './pages/profile/profile.component';
+import { IncomeComponent } from './pages/income/income.component';
+import { WithdrawalComponent } from './pages/withdrawal/withdrawal.component';
 // #fake-end#
 
 function appInitializer(authService: AuthService) {
@@ -48,7 +50,7 @@ function appInitializer(authService: AuthService) {
 }
 
 @NgModule({
-    declarations: [AppComponent, MovementsComponent, CreateMovementsComponent, RawMaterialsComponent, CreateRawMaterialComponent, ProductsComponent, CreateProductComponent, CreateUserComponent, EditProductComponent, EditRawMaterialComponent, MeasurementUnitsComponent, CreateMeasurementUnitsComponent, EditMeasurementUnitsComponent, ProductSizesComponent, CreateProductSizeComponent, EditProductSizeComponent, ProductStylesComponent, CreateProductStyleComponent, EditProductStyleComponent, LoginComponent, ProfileComponent],
+    declarations: [AppComponent, MovementsComponent, CreateMovementsComponent, RawMaterialsComponent, CreateRawMaterialComponent, ProductsComponent, CreateProductComponent, CreateUserComponent, EditProductComponent, EditRawMaterialComponent, MeasurementUnitsComponent, CreateMeasurementUnitsComponent, EditMeasurementUnitsComponent, ProductSizesComponent, CreateProductSizeComponent, EditProductSizeComponent, ProductStylesComponent, CreateProductStyleComponent, EditProductStyleComponent, LoginComponent, ProfileComponent, IncomeComponent, WithdrawalComponent],
     providers: [
         {
             provide: APP_INITIALIZER,

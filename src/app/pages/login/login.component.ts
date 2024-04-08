@@ -1,8 +1,6 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { timeout } from 'rxjs';
-import { Login } from 'src/app/models/Login';
 import { AuthService } from 'src/app/services/auth.service';
 import Swal from 'sweetalert2';
 
@@ -12,47 +10,45 @@ import Swal from 'sweetalert2';
   styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent {
-  sendRequired() {
-    Swal.fire('Error', 'Complete el correo y contraseña', 'error');
-  }
-  
-  form: FormGroup;
-  model: Login = {
-    email: '',
-    password: '',
-  };
+  loginForm: FormGroup;
 
   constructor(
     private authService: AuthService,
     private router: Router,
     private formBuilder: FormBuilder
   ) {
-    this.form = this.formBuilder.group({
-      password: ['', Validators.required],
-      //email: ['', [Validators.required, Validators.email]],
+    this.loginForm = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email, Validators.pattern('[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$')]],
+      password: ['', Validators.required],
     });
   }
 
   get f() {
-    return this.form.controls;
+    return this.loginForm.controls;
   }
 
   login() {
     this.authService
-      .login(this.model.email, this.model.password)
+      .login(this.loginForm.value.email, this.loginForm.value.password)
       .subscribe((response) => {
-        console.log(response);
         this.router.navigate(['dashboard']);
+        this.sendSuccess();
       });
   }
 
   onSubmit() {
-    // Aquí puedes enviar los datos del formulario o realizar acciones adicionales
-    if (this.form.invalid) {
+    if (this.loginForm.invalid) {
       this.sendRequired();
     }
     this.login();
+  }
+
+  sendRequired() {
+    Swal.fire('Error', 'Complete el correo y contraseña', 'error');
+  }
+
+  sendSuccess(): void {
+    Swal.fire('Ingresaste', 'Ingreso correctamente', 'success');
   }
 
   goToRegister() {
