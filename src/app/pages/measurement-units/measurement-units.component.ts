@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ModalComponent, ModalConfig } from 'src/app/_metronic/partials';
 import { MeasurementUnit } from 'src/app/models/MeasurementUnit';
 import { MeasurementUnitService } from 'src/app/services/measurement-unit.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-measurement-units',
@@ -33,6 +34,14 @@ export class MeasurementUnitsComponent implements OnInit {
     this.loadMeasurementUnits();
   }
 
+  sendSuccess(): void{
+    Swal.fire('Eliminación exitosa', 'Se eliminó la unidad de medida exitosamente', 'success');
+  }
+
+  sendError(): void{
+    Swal.fire('Error', 'Ocurrió un error, vuelve a intentarlo', 'error');
+  }
+
   loadMeasurementUnits(): void {
     this.isLoading = true;
     this.measurementUnitService.getMeasurementUnits().subscribe({
@@ -43,6 +52,7 @@ export class MeasurementUnitsComponent implements OnInit {
       },
       error: (error) => {
         console.error('Error loading movements', error);
+        this.sendError();
       },
       complete: () => {
         this.isLoading = false; // Finaliza la carga
@@ -72,11 +82,13 @@ export class MeasurementUnitsComponent implements OnInit {
       return true;
     } catch (error) {
       console.error('Error deleting measurement unit:', error);
+      this.sendError();
       return false;
     } finally {
       this.selectedMeasurementUnit = null;
       // Forzar la detección de cambios después de eliminar la unidad de medida.
       this.cdr.detectChanges();
+      this.sendSuccess();
     }
   }
 

@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ModalComponent, ModalConfig } from 'src/app/_metronic/partials';
 import { RawMaterial } from 'src/app/models/RawMaterial';
 import { RawMaterialService } from 'src/app/services/raw-material.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-raw-materials',
@@ -33,6 +34,14 @@ export class RawMaterialsComponent implements OnInit {
     this.loadRawMaterials();
   }
 
+  sendSuccess(): void{
+    Swal.fire('Eliminación exitosa', 'Se eliminó la materia prima exitosamente', 'success');
+  }
+
+  sendError(): void{
+    Swal.fire('Error', 'Ocurrió un error, vuelve a intentarlo', 'error');
+  }
+
   loadRawMaterials(): void {
     this.isLoading = true;
     this.rawMaterialService.getRawMaterials().subscribe({
@@ -43,6 +52,7 @@ export class RawMaterialsComponent implements OnInit {
       },
       error: (error) => {
         console.error('Error loading movements', error);
+        this.sendError();
       },
       complete: () => {
         this.isLoading = false; // Finaliza la carga
@@ -65,10 +75,12 @@ export class RawMaterialsComponent implements OnInit {
       return true;
     } catch (error) {
       console.error('Error deleting raw material:', error);
+      this.sendError();
       return false;
     } finally {
       this.selectedRawMaterial = null;
       this.cdr.detectChanges();
+      this.sendSuccess();
     }
   }
 

@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ModalComponent, ModalConfig } from 'src/app/_metronic/partials';
 import { Product } from 'src/app/models/Product';
 import { ProductService } from 'src/app/services/product.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-products',
@@ -33,6 +34,14 @@ export class ProductsComponent implements OnInit {
     this.loadProducts();
   }
 
+  sendSuccess(): void{
+    Swal.fire('Eliminación exitosa', 'Se eliminó el producto exitosamente', 'success');
+  }
+
+  sendError(): void{
+    Swal.fire('Error', 'Ocurrió un error, vuelve a intentarlo', 'error');
+  }
+
   loadProducts(): void {
     this.isLoading = true;
     this.productService.getProducts().subscribe({
@@ -43,6 +52,7 @@ export class ProductsComponent implements OnInit {
       },
       error: (error) => {
         console.error('Error loading movements', error);
+        this.sendError();
       },
       complete: () => {
         this.isLoading = false; // Finaliza la carga
@@ -66,11 +76,13 @@ export class ProductsComponent implements OnInit {
       return true;
     } catch (error) {
       console.error('Error deleting product:', error);
+      this.sendError();
       return false;
     } finally {
       this.selectedProduct = null;
       // Forzar la detección de cambios después de eliminar el producto.
       this.cdr.detectChanges();
+      this.sendSuccess();
     }
   }
 

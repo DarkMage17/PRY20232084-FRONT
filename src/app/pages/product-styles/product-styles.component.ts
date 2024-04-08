@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ModalComponent, ModalConfig } from 'src/app/_metronic/partials';
 import { ProductStyleService } from 'src/app/services/product-style.service';
 import { Style } from 'src/app/models/Style';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-product-styles',
@@ -38,6 +39,14 @@ export class ProductStylesComponent implements OnInit {
     return await this.modalComponent.open();
   }
 
+  sendSuccess(): void{
+    Swal.fire('Eliminación exitosa', 'Se eliminó el estilo exitosamente', 'success');
+  }
+
+  sendError(): void{
+    Swal.fire('Error', 'Ocurrió un error, vuelve a intentarlo', 'error');
+  }
+
   loadStyles(): void {
     this.isLoading = true;
     this.productStyleService.getProductStyles().subscribe({
@@ -48,6 +57,7 @@ export class ProductStylesComponent implements OnInit {
       },
       error: (error) => {
         console.error('Error loading movements', error);
+        this.sendError();
       },
       complete: () => {
         this.isLoading = false; // Finaliza la carga
@@ -66,11 +76,13 @@ export class ProductStylesComponent implements OnInit {
       return true;
     } catch (error) {
       console.error('Error deleting style:', error);
+      this.sendError();
       return false;
     } finally {
       this.selectedStyle = null;
       // Forzar la detección de cambios después de eliminar la unidad de medida.
       this.cdr.detectChanges();
+      this.sendSuccess();
     }
   }
 
