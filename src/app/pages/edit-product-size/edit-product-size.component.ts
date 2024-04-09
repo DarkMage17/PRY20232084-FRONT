@@ -23,11 +23,17 @@ export class EditProductSizeComponent implements OnInit{
   ) {}
 
   ngOnInit(): void {
-    this.authService.currentUser.subscribe(x => this.loggedUser = x);
-    this.productSizeId = this.route.snapshot.paramMap.get('id') as number | null;
-    if (this.productSizeId) {
-      this.loadProductSizeDetails(this.productSizeId);
-    }
+    this.authService.currentUser.subscribe(x => {
+      this.loggedUser = x;
+      if (!this.loggedUser || Object.keys(this.loggedUser).length === 0) {
+        this.router.navigate(['login']);
+      } else {
+        this.productSizeId = this.route.snapshot.paramMap.get('id') as number | null;
+        if (this.productSizeId) {
+          this.loadProductSizeDetails(this.productSizeId);
+        }
+      }
+    });
   }
 
   loadProductSizeDetails(productSizeId: number): void {

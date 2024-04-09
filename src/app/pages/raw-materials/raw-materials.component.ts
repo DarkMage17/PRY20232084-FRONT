@@ -2,6 +2,7 @@ import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ModalComponent, ModalConfig } from 'src/app/_metronic/partials';
 import { RawMaterial } from 'src/app/models/RawMaterial';
+import { AuthService } from 'src/app/services/auth.service';
 import { RawMaterialService } from 'src/app/services/raw-material.service';
 import Swal from 'sweetalert2';
 
@@ -14,6 +15,7 @@ export class RawMaterialsComponent implements OnInit {
   rawMaterials: RawMaterial[] = [];
   selectedRawMaterial: RawMaterial | null = null;
   isLoading: boolean = false;
+  loggedUser: any;
 
   modalConfig: ModalConfig = {
     modalTitle: '¿Está seguro de que quiere eliminar la materia prima?',
@@ -24,6 +26,7 @@ export class RawMaterialsComponent implements OnInit {
   @ViewChild('modal') private modalComponent: ModalComponent;
 
   constructor(
+    private authService: AuthService,
     private route: ActivatedRoute,
     private router: Router,
     private rawMaterialService: RawMaterialService,
@@ -31,7 +34,14 @@ export class RawMaterialsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.loadRawMaterials();
+    this.authService.currentUser.subscribe(x => {
+      this.loggedUser = x;
+      if (!this.loggedUser || Object.keys(this.loggedUser).length === 0) {
+        this.router.navigate(['login']);
+      } else {
+        this.loadRawMaterials();
+      }
+    });
   }
 
   sendSuccess(): void{

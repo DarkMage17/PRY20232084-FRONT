@@ -88,8 +88,10 @@ export class DashboardComponent implements OnInit {
     },
   ];
   selectedData: string = 'Tela de algodón';
-
+  loggedUser: any;
+  
   constructor(
+    private authService: AuthService,
     private rawMaterialService: RawMaterialService,
     private cdr: ChangeDetectorRef,
     private route: ActivatedRoute,
@@ -179,7 +181,14 @@ export class DashboardComponent implements OnInit {
     };
   }
   ngOnInit(): void {
-    this.loadRawMaterials();
+    this.authService.currentUser.subscribe(x => {
+      this.loggedUser = x;
+      if (!this.loggedUser || Object.keys(this.loggedUser).length === 0) {
+        this.router.navigate(['login']);
+      } else {
+        this.loadRawMaterials();
+      }
+    });
   }
 
 

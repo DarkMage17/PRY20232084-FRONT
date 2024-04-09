@@ -30,15 +30,8 @@ import { map } from 'rxjs/operators';
     login(email: string, password: string) {
       return this.http.post<any>(`${this.baseUrl}/login`, { email, password })
         .pipe(map(user => {
-          if (user && user.token) {
-            // El usuario es válido, lo guardamos en el almacenamiento local y lo emitimos a través del BehaviorSubject
-            localStorage.setItem('currentUser', JSON.stringify(user));
-            this.currentUserSubject.next(user);
-          } else {
-            // El usuario no es válido, limpiamos el almacenamiento local y emitimos null
-            localStorage.removeItem('currentUser');
-            this.currentUserSubject.next(null);
-          }
+          localStorage.setItem('currentUser', JSON.stringify(user));
+          this.currentUserSubject.next(user);
           return user;
         }));
     }

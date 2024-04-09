@@ -17,7 +17,6 @@ export class CreateRawMaterialComponent implements OnInit {
   createRawMaterial: createRawMaterial = new createRawMaterial();
   measurementUnits: MeasurementUnit[] = [];
   loggedUser: any;
-
   form: FormGroup;
 
   constructor(
@@ -40,8 +39,14 @@ export class CreateRawMaterialComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.authService.currentUser.subscribe(x => this.loggedUser = x);
-    this.loadData();
+    this.authService.currentUser.subscribe(x => {
+      this.loggedUser = x;
+      if (!this.loggedUser || Object.keys(this.loggedUser).length === 0) {
+        this.router.navigate(['login']);
+      } else {
+        this.loadData();
+      }
+    });
   }
 
   insertRawMaterial(): void {

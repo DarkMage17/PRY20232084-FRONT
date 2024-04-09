@@ -4,6 +4,7 @@ import { ModalComponent, ModalConfig } from 'src/app/_metronic/partials';
 import { ProductStyleService } from 'src/app/services/product-style.service';
 import { Style } from 'src/app/models/Style';
 import Swal from 'sweetalert2';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-product-styles',
@@ -14,6 +15,7 @@ export class ProductStylesComponent implements OnInit {
   productStyles: Style[] = [];
   selectedStyle: Style | null = null;
   isLoading: boolean = false;
+  loggedUser: any;
 
   modalConfig: ModalConfig = {
     modalTitle: '¿Está seguro de que quiere eliminar el estilo?',
@@ -24,6 +26,7 @@ export class ProductStylesComponent implements OnInit {
   @ViewChild('modal') private modalComponent: ModalComponent;
 
   constructor(
+    private authService: AuthService,
     private route: ActivatedRoute,
     private router: Router,
     private productStyleService: ProductStyleService,
@@ -31,7 +34,14 @@ export class ProductStylesComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.loadStyles();
+    this.authService.currentUser.subscribe(x => {
+      this.loggedUser = x;
+      if (!this.loggedUser || Object.keys(this.loggedUser).length === 0) {
+        this.router.navigate(['login']);
+      } else {
+        this.loadStyles();
+      }
+    });
   }
 
   async openModal(style: Style) {

@@ -32,7 +32,12 @@ export class CreateMeasurementUnitsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.authService.currentUser.subscribe(x => this.loggedUser = x);
+    this.authService.currentUser.subscribe(x => {
+      this.loggedUser = x;
+      if (!this.loggedUser || Object.keys(this.loggedUser).length === 0) {
+        this.router.navigate(['login']);
+      }
+    });
   }
 
   insertMeasurementUnit(): void {

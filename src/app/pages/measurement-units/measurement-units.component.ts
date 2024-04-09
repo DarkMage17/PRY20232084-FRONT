@@ -2,6 +2,7 @@ import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ModalComponent, ModalConfig } from 'src/app/_metronic/partials';
 import { MeasurementUnit } from 'src/app/models/MeasurementUnit';
+import { AuthService } from 'src/app/services/auth.service';
 import { MeasurementUnitService } from 'src/app/services/measurement-unit.service';
 import Swal from 'sweetalert2';
 
@@ -14,6 +15,7 @@ export class MeasurementUnitsComponent implements OnInit {
   measurementUnits: MeasurementUnit[] = [];
   selectedMeasurementUnit: MeasurementUnit | null = null;
   isLoading: boolean = false;
+  loggedUser: any;
 
   modalConfig: ModalConfig = {
     modalTitle: '¿Está seguro de que quiere eliminar la unidad de medida?',
@@ -24,6 +26,7 @@ export class MeasurementUnitsComponent implements OnInit {
   @ViewChild('modal') private modalComponent: ModalComponent;
 
   constructor(
+    private authService: AuthService,
     private route: ActivatedRoute,
     private router: Router,
     private measurementUnitService: MeasurementUnitService,
@@ -31,7 +34,14 @@ export class MeasurementUnitsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.loadMeasurementUnits();
+    this.authService.currentUser.subscribe(x => {
+      this.loggedUser = x;
+      if (!this.loggedUser || Object.keys(this.loggedUser).length === 0) {
+        this.router.navigate(['login']);
+      } else {
+        this.loadMeasurementUnits();
+      }
+    });
   }
 
   sendSuccess(): void{

@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CreateProduct } from 'src/app/models/CreateProduct';
 import { Size } from 'src/app/models/Size';
 import { Style } from 'src/app/models/Style';
+import { AuthService } from 'src/app/services/auth.service';
 import { ProductSizeService } from 'src/app/services/product-size.service';
 import { ProductStyleService } from 'src/app/services/product-style.service';
 import { ProductService } from 'src/app/services/product.service';
@@ -17,8 +18,10 @@ export class EditProductComponent implements OnInit {
   productSizes: Size[] = [];
   editProduct: CreateProduct = new CreateProduct(); // Consider renaming CreateProduct to Product for better clarity
   productId: number | null = null;
+  loggedUser: any;
 
   constructor(
+    private authService: AuthService,
     private route: ActivatedRoute,
     private router: Router,
     private productStyleService: ProductStyleService,
@@ -28,11 +31,18 @@ export class EditProductComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.productId = this.route.snapshot.paramMap.get('id') as number | null;
-    this.loadData();
-    if (this.productId) {
-      this.loadProductDetails(this.productId);
-    }
+    this.authService.currentUser.subscribe(x => {
+      this.loggedUser = x;
+      if (!this.loggedUser || Object.keys(this.loggedUser).length === 0) {
+        this.router.navigate(['login']);
+      } else {
+        this.productId = this.route.snapshot.paramMap.get('id') as number | null;
+        this.loadData();
+        if (this.productId) {
+          this.loadProductDetails(this.productId);
+        }
+      }
+    });
   }
 
   loadData(): void {

@@ -10,6 +10,7 @@ import Swal from 'sweetalert2';
   styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent implements OnInit {
+  loggedUser: any;
   loginForm: FormGroup;
 
   constructor(
@@ -19,7 +20,14 @@ export class LoginComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.initializeForm();
+    this.authService.currentUser.subscribe(x => {
+      this.loggedUser = x;
+      if (!this.loggedUser || Object.keys(this.loggedUser).length === 0) {
+        this.initializeForm();
+      } else {
+        this.router.navigate(['dashboard']);
+      }
+    });
   }
 
   initializeForm(): void {

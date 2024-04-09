@@ -15,27 +15,44 @@ import { RawMaterialService } from 'src/app/services/raw-material.service';
 @Component({
   selector: 'app-create-movements',
   templateUrl: './create-movements.component.html',
-  styleUrls: ['./create-movements.component.scss']
+  styleUrls: ['./create-movements.component.scss'],
 })
-export class CreateMovementsComponent implements OnInit{
+export class CreateMovementsComponent implements OnInit {
   loggedUser: any;
-  movement: CreateMovement =  new CreateMovement();
+  movement: CreateMovement = new CreateMovement();
   isProduct: boolean = false;
   products: Product[] = [];
   rawMaterials: RawMaterial[] = [];
   selectedProductId: number = 0;
   selectedRawMaterialId: number = 0;
   quantity: number = 0;
-  productMovement: createProductMovementDetail = new createProductMovementDetail();
-  rawMaterialMovement: createRawMaterialMovementDetail = new createRawMaterialMovementDetail();
-  
-  constructor(private authService: AuthService, private route: ActivatedRoute,
-    private router: Router,private movementService: MovementService, private productService: ProductService, private rawMaterialService: RawMaterialService, private productMovementDetailService: ProductMovementDetailService, private rawMaterialMovementDetailService: RawMaterialMovementDetailService, private cdr: ChangeDetectorRef) { }
+  productMovement: createProductMovementDetail =
+    new createProductMovementDetail();
+  rawMaterialMovement: createRawMaterialMovementDetail =
+    new createRawMaterialMovementDetail();
+
+  constructor(
+    private authService: AuthService,
+    private route: ActivatedRoute,
+    private router: Router,
+    private movementService: MovementService,
+    private productService: ProductService,
+    private rawMaterialService: RawMaterialService,
+    private productMovementDetailService: ProductMovementDetailService,
+    private rawMaterialMovementDetailService: RawMaterialMovementDetailService,
+    private cdr: ChangeDetectorRef
+  ) {}
   ngOnInit(): void {
-    this.authService.currentUser.subscribe(x => this.loggedUser = x);
-    this.isProduct = false;
-    this.cdr.detectChanges();
-    this.loadData();
+    this.authService.currentUser.subscribe((x) => {
+      this.loggedUser = x;
+      if (!this.loggedUser || Object.keys(this.loggedUser).length === 0) {
+        this.router.navigate(['login']);
+      } else {
+        this.isProduct = false;
+        this.cdr.detectChanges();
+        this.loadData();
+      }
+    });
   }
 
   insertMovement() {
@@ -48,26 +65,30 @@ export class CreateMovementsComponent implements OnInit{
           this.productMovement.quantity = this.quantity;
           this.productMovement.movementID = datos.id;
           console.log(this.productMovement);
-          this.productMovementDetailService.createProductMovementDetail(this.productMovement).subscribe(
-            () => {
-              this.router.navigate(['movements']);
-            },
-            (error: any) => {
-              console.error(error);
-            }
-          );
+          this.productMovementDetailService
+            .createProductMovementDetail(this.productMovement)
+            .subscribe(
+              () => {
+                this.router.navigate(['movements']);
+              },
+              (error: any) => {
+                console.error(error);
+              }
+            );
         } else {
           this.rawMaterialMovement.rawMaterial_ID = this.selectedRawMaterialId;
           this.rawMaterialMovement.quantity = this.quantity;
           this.rawMaterialMovement.movement_ID = datos.id;
-          this.rawMaterialMovementDetailService.createRawMaterialMovementDetail(this.rawMaterialMovement).subscribe(
-            () => {
-              this.router.navigate(['movements']);
-            },
-            (error: any) => {
-              console.error(error);
-            }
-          );
+          this.rawMaterialMovementDetailService
+            .createRawMaterialMovementDetail(this.rawMaterialMovement)
+            .subscribe(
+              () => {
+                this.router.navigate(['movements']);
+              },
+              (error: any) => {
+                console.error(error);
+              }
+            );
         }
       },
       (error: any) => {
@@ -75,20 +96,18 @@ export class CreateMovementsComponent implements OnInit{
       }
     );
   }
-  
+
   loadData(): void {
-    this.productService.getProducts().subscribe(
-      productsResponse => {
-        this.products = productsResponse;
-        this.cdr.detectChanges();
-      }
-      );
-    this.rawMaterialService.getRawMaterials().subscribe(
-      rawMaterialsResponse => {
+    this.productService.getProducts().subscribe((productsResponse) => {
+      this.products = productsResponse;
+      this.cdr.detectChanges();
+    });
+    this.rawMaterialService
+      .getRawMaterials()
+      .subscribe((rawMaterialsResponse) => {
         this.rawMaterials = rawMaterialsResponse;
         this.cdr.detectChanges();
-      }
-      );
+      });
   }
 
   onRadioChange(value: boolean) {
@@ -104,8 +123,7 @@ export class CreateMovementsComponent implements OnInit{
     this.cdr.detectChanges();
   }
 
-
-  goBack(){
+  goBack() {
     this.router.navigate(['movements']);
   }
 }

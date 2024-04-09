@@ -3,6 +3,7 @@ import { Movement } from 'src/app/models/Movement';
 import { MovementService } from 'src/app/services/movement.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ModalComponent, ModalConfig } from 'src/app/_metronic/partials';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-movements',
@@ -13,6 +14,7 @@ export class MovementsComponent implements OnInit {
   movements: Movement[] = [];
   selectedMovement: Movement | null = null;
   isLoading: boolean = false;
+  loggedUser: any;
 
   modalConfig: ModalConfig = {
     modalTitle: '¿Está seguro de que quiere eliminar el movimiento?',
@@ -23,6 +25,7 @@ export class MovementsComponent implements OnInit {
   @ViewChild('modal') private modalComponent: ModalComponent;
 
   constructor(
+    private authService: AuthService,
     private route: ActivatedRoute,
     private router: Router,
     private movementService: MovementService,
@@ -30,7 +33,14 @@ export class MovementsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.loadMovements();
+    this.authService.currentUser.subscribe(x => {
+      this.loggedUser = x;
+      if (!this.loggedUser || Object.keys(this.loggedUser).length === 0) {
+        this.router.navigate(['login']);
+      } else {
+        this.loadMovements();
+      }
+    });
   }
 
   loadMovements(): void {

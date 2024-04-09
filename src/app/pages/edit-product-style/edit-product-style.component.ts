@@ -23,11 +23,17 @@ export class EditProductStyleComponent implements OnInit{
   ) {}
 
   ngOnInit(): void {
-    this.authService.currentUser.subscribe(x => this.loggedUser = x);
-    this.productStyleId = this.route.snapshot.paramMap.get('id') as number | null;
-    if (this.productStyleId) {
-      this.loadProductStyleDetails(this.productStyleId);
-    }
+    this.authService.currentUser.subscribe(x => {
+      this.loggedUser = x;
+      if (!this.loggedUser || Object.keys(this.loggedUser).length === 0) {
+        this.router.navigate(['login']);
+      } else {
+        this.productStyleId = this.route.snapshot.paramMap.get('id') as number | null;
+        if (this.productStyleId) {
+          this.loadProductStyleDetails(this.productStyleId);
+        }
+      }
+    });
   }
 
   loadProductStyleDetails(productStyleId: number): void {

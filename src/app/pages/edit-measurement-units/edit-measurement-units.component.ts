@@ -1,6 +1,7 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CreateMeasurementUnit } from 'src/app/models/CreateMeasurementUnit';
+import { AuthService } from 'src/app/services/auth.service';
 import { MeasurementUnitService } from 'src/app/services/measurement-unit.service';
 
 @Component({
@@ -11,8 +12,10 @@ import { MeasurementUnitService } from 'src/app/services/measurement-unit.servic
 export class EditMeasurementUnitsComponent implements OnInit{
   editMeasurementUnit: CreateMeasurementUnit = new CreateMeasurementUnit(); // Consider renaming CreateProduct to Product for better clarity
   measurementUnitId: number | null = null;
+  loggedUser: any;
 
   constructor(
+    private authService: AuthService,
     private route: ActivatedRoute,
     private router: Router,
     private measurementService: MeasurementUnitService,
@@ -20,10 +23,17 @@ export class EditMeasurementUnitsComponent implements OnInit{
   ) {}
 
   ngOnInit(): void {
-    this.measurementUnitId = this.route.snapshot.paramMap.get('id') as number | null;
-    if (this.measurementUnitId) {
-      this.loadMeasurementUnitDetails(this.measurementUnitId);
-    }
+    this.authService.currentUser.subscribe(x => {
+      this.loggedUser = x;
+      if (!this.loggedUser || Object.keys(this.loggedUser).length === 0) {
+        this.router.navigate(['login']);
+      } else {
+        this.measurementUnitId = this.route.snapshot.paramMap.get('id') as number | null;
+        if (this.measurementUnitId) {
+          this.loadMeasurementUnitDetails(this.measurementUnitId);
+        }
+      }
+    });
   }
 
   loadMeasurementUnitDetails(measurementUnitId: number): void {

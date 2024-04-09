@@ -24,8 +24,14 @@ export class CreateProductStyleComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.authService.currentUser.subscribe(x => this.loggedUser = x);
-    this.initializeForm();
+    this.authService.currentUser.subscribe(x => {
+      this.loggedUser = x;
+      if (!this.loggedUser || Object.keys(this.loggedUser).length === 0) {
+        this.router.navigate(['login']);
+      } else {
+        this.initializeForm();
+      }
+    });
   }
 
   initializeForm(): void {

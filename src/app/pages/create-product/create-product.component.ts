@@ -33,9 +33,15 @@ export class CreateProductComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.authService.currentUser.subscribe((x) => (this.loggedUser = x));
-    this.loadData();
-    this.createForm();
+    this.authService.currentUser.subscribe(x => {
+      this.loggedUser = x;
+      if (!this.loggedUser || Object.keys(this.loggedUser).length === 0) {
+        this.router.navigate(['login']);
+      } else {
+        this.loadData();
+        this.createForm();
+      }
+    });
   }
 
   loadData(): void {

@@ -2,6 +2,7 @@ import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ModalComponent, ModalConfig } from 'src/app/_metronic/partials';
 import { Size } from 'src/app/models/Size';
+import { AuthService } from 'src/app/services/auth.service';
 import { ProductSizeService } from 'src/app/services/product-size.service';
 import Swal from 'sweetalert2';
 
@@ -14,6 +15,7 @@ export class ProductSizesComponent implements OnInit {
   productSizes: Size[] = [];
   selectedSize: Size | null = null;
   isLoading: boolean = false;
+  loggedUser: any;
 
   modalConfig: ModalConfig = {
     modalTitle: '¿Está seguro de que quiere eliminar la talla?',
@@ -24,6 +26,7 @@ export class ProductSizesComponent implements OnInit {
   @ViewChild('modal') private modalComponent: ModalComponent;
 
   constructor(
+    private authService: AuthService,
     private route: ActivatedRoute,
     private router: Router,
     private productSizeService: ProductSizeService,
@@ -31,7 +34,14 @@ export class ProductSizesComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.loadSizes();
+    this.authService.currentUser.subscribe(x => {
+      this.loggedUser = x;
+      if (!this.loggedUser || Object.keys(this.loggedUser).length === 0) {
+        this.router.navigate(['login']);
+      } else {
+        this.loadSizes();
+      }
+    });
   }
 
   async openModal(size: Size) {
