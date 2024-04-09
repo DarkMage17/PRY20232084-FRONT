@@ -23,6 +23,8 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { ProfileComponent } from './profile/profile.component';
 import { IncomeComponent } from './income/income.component';
 import { WithdrawalComponent } from './withdrawal/withdrawal.component';
+import { CreateIncomeComponent } from './create-income/create-income.component';
+import { CreateWithdrawalComponent } from './create-withdrawal/create-withdrawal.component';
 
 const Routing: Routes = [
   {
@@ -146,8 +148,18 @@ const Routing: Routes = [
     canActivate: [AuthGuard]
   },
   {
+    path: 'income/create',
+    component: CreateIncomeComponent,
+    canActivate: [AuthGuard]
+  },
+  {
     path: 'withdrawal',
     component: WithdrawalComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'withdrawal/create',
+    component: CreateWithdrawalComponent,
     canActivate: [AuthGuard]
   },
   {

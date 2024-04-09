@@ -91,6 +91,6 @@ export class WithdrawalComponent implements OnInit{
   }
 
   goCreate() {
-    this.router.navigate(['movements/create']);
+    this.router.navigate(['withdrawal/create']);
   }
 }

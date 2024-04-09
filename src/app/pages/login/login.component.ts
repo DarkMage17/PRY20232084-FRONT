@@ -1,3 +1,4 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -51,12 +52,32 @@ export class LoginComponent implements OnInit {
   login() {
     this.authService
       .login(this.loginForm.value.email, this.loginForm.value.password)
-      .subscribe((response) => {
-        this.router.navigate(['dashboard']);
-        this.sendSuccess();
-      });
+      .subscribe(
+        (response) => {
+            this.router.navigate(['dashboard']);
+            this.sendSuccess();
+        },
+        (error: HttpErrorResponse) => {
+          if (error.error === "Inicio de sesión fallido.") {
+            this.sendFailedLogin();
+          } else {
+            this.sendError();
+          }
+        }
+      );
   }
-
+  
+  sendSuccess(): void {
+    Swal.fire('Ingresaste', 'Ingreso correctamente', 'success');
+  }
+  
+  sendFailedLogin(): void {
+    Swal.fire('Inicio de sesión fallido', 'Por favor verifica tus credenciales e intenta de nuevo', 'error');
+  }
+  
+  sendError(): void {
+    Swal.fire('Error', 'Vuelve a intentar, algo salió mal', 'error');
+  }
   onSubmit() {
     if (this.loginForm.invalid) {
       this.sendRequired();
@@ -66,10 +87,6 @@ export class LoginComponent implements OnInit {
 
   sendRequired() {
     Swal.fire('Error', 'Complete el correo y contraseña', 'error');
-  }
-
-  sendSuccess(): void {
-    Swal.fire('Ingresaste', 'Ingreso correctamente', 'success');
   }
 
   goToRegister() {

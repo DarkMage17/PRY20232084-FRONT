@@ -91,6 +91,6 @@ export class IncomeComponent implements OnInit{
   }
 
   goCreate() {
-    this.router.navigate(['movements/create']);
+    this.router.navigate(['income/create']);
   }
 }

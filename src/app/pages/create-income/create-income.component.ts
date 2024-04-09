@@ -11,13 +11,14 @@ import { ProductMovementDetailService } from 'src/app/services/product-movement-
 import { ProductService } from 'src/app/services/product.service';
 import { RawMaterialMovementDetailService } from 'src/app/services/raw-material-movement-detail.service';
 import { RawMaterialService } from 'src/app/services/raw-material.service';
+import { SharedDataService } from 'src/app/services/shared-data.service';
 
 @Component({
-  selector: 'app-create-movements',
-  templateUrl: './create-movements.component.html',
-  styleUrls: ['./create-movements.component.scss'],
+  selector: 'app-create-income',
+  templateUrl: './create-income.component.html',
+  styleUrls: ['./create-income.component.scss'],
 })
-export class CreateMovementsComponent implements OnInit {
+export class CreateIncomeComponent implements OnInit {
   loggedUser: any;
   movement: CreateMovement = new CreateMovement();
   isProduct: boolean = false;
@@ -31,7 +32,10 @@ export class CreateMovementsComponent implements OnInit {
   rawMaterialMovement: createRawMaterialMovementDetail =
     new createRawMaterialMovementDetail();
 
+  Dummy: any;
+
   constructor(
+    private sharedDataService: SharedDataService,
     private authService: AuthService,
     private route: ActivatedRoute,
     private router: Router,
@@ -43,6 +47,7 @@ export class CreateMovementsComponent implements OnInit {
     private cdr: ChangeDetectorRef
   ) {}
   ngOnInit(): void {
+    this.Dummy = this.sharedDataService.getSharedObject();
     this.authService.currentUser.subscribe((x) => {
       this.loggedUser = x;
       if (!this.loggedUser || Object.keys(this.loggedUser).length === 0) {
@@ -57,6 +62,7 @@ export class CreateMovementsComponent implements OnInit {
 
   insertMovement() {
     this.movement.createdBy = this.loggedUser.id;
+    this.movement.movementType = true;
     this.movementService.createMovement(this.movement).subscribe(
       (datos: any) => {
         console.log(datos);
@@ -83,6 +89,26 @@ export class CreateMovementsComponent implements OnInit {
             .createRawMaterialMovementDetail(this.rawMaterialMovement)
             .subscribe(
               () => {
+                let calc: number = this.quantity / 100;
+                let checked: number = Math.floor(calc);
+                switch (this.selectedRawMaterialId) {
+                  case 9:
+                    this.Dummy.telaSeda = this.Dummy.telaSeda + checked;
+                    this.sharedDataService.setSharedObject(this.Dummy);
+                    break;
+                  case 10:
+                    this.Dummy.telaLino = this.Dummy.telaLino + checked;
+                    this.sharedDataService.setSharedObject(this.Dummy);
+                    break;
+                  case 11:
+                    this.Dummy.telaEncaje = this.Dummy.telaEncaje + checked;
+                    this.sharedDataService.setSharedObject(this.Dummy);
+                    break;
+                  case 13:
+                    this.Dummy.telaAlgodon = this.Dummy.telaAlgodon + checked;
+                    this.sharedDataService.setSharedObject(this.Dummy);
+                    break;
+                }
                 this.router.navigate(['income']);
               },
               (error: any) => {

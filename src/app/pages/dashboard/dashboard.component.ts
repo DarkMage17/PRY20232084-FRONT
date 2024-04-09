@@ -18,6 +18,8 @@ import {
 import { ActivatedRoute, Router } from '@angular/router';
 import { RawMaterialService } from 'src/app/services/raw-material.service';
 import { RawMaterial } from 'src/app/models/RawMaterial';
+import { SharedDataService } from 'src/app/services/shared-data.service';
+import { Dummy } from 'src/app/models/Dummy';
 
 export type ChartOptions = {
   series: ApexAxisChartSeries;
@@ -46,7 +48,7 @@ export class DashboardComponent implements OnInit {
 
   telaAlgodonPrediccion: number[] = [
     97, 253, 443, 518, 505, 222, 218, 440, 224, 437, 218, 206, 94, 504, 395,
-    428, 371, 475, 391, 286, 333,
+    428, 371, 475, 391, 286,
   ];
   telaAlgodonConsumoReal: number[] = [
     71, 278, 430, 510, 491, 244, 219, 450, 244, 443, 236, 233, 112, 491, 400,
@@ -54,7 +56,7 @@ export class DashboardComponent implements OnInit {
   ];
   telaSedaPrediccion: number[] = [
     99, 116, 458, 522, 472, 498, 224, 117, 297, 284, 424, 410, 290, 173, 246,
-    187, 311, 272, 240, 404, 368,
+    187, 311, 272, 240, 404,
   ];
   telaSedaConsumoReal: number[] = [
     94, 92, 445, 510, 450, 493, 220, 85, 311, 279, 430, 420, 309, 167, 245, 170,
@@ -62,7 +64,7 @@ export class DashboardComponent implements OnInit {
   ];
   telaLinoPrediccion: number[] = [
     238, 302, 109, 182, 406, 164, 131, 355, 323, 242, 150, 414, 302, 111, 126,
-    236, 500, 420, 445, 236, 280,
+    236, 500, 420, 445, 236,
   ];
   telaLinoConsumoReal: number[] = [
     214, 301, 65, 176, 395, 152, 118, 371, 333, 248, 137, 410, 330, 79, 116,
@@ -70,7 +72,7 @@ export class DashboardComponent implements OnInit {
   ];
   telaEncajePrediccion: number[] = [
     328, 469, 141, 143, 365, 290, 206, 239, 192, 494, 119, 167, 355, 121, 172,
-    386, 108, 143, 378, 411, 137,
+    386, 108, 143, 378, 411,
   ];
   telaEncajeConsumoReal: number[] = [
     333, 458, 159, 143, 386, 303, 216, 242, 222, 496, 140, 168, 391, 118, 167,
@@ -89,8 +91,10 @@ export class DashboardComponent implements OnInit {
   ];
   selectedData: string = 'Tela de algodón';
   loggedUser: any;
+  Dummy: any;
   
   constructor(
+    private sharedDataService: SharedDataService,
     private authService: AuthService,
     private rawMaterialService: RawMaterialService,
     private cdr: ChangeDetectorRef,
@@ -180,7 +184,14 @@ export class DashboardComponent implements OnInit {
       },
     };
   }
+
+
   ngOnInit(): void {
+    this.Dummy = this.sharedDataService.getSharedObject();
+    this.telaAlgodonPrediccion.push(this.Dummy.telaAlgodon)
+    this.telaLinoPrediccion.push(this.Dummy.telaLino)
+    this.telaEncajePrediccion.push(this.Dummy.telaEncaje)
+    this.telaSedaPrediccion.push(this.Dummy.telaSeda)
     this.authService.currentUser.subscribe(x => {
       this.loggedUser = x;
       if (!this.loggedUser || Object.keys(this.loggedUser).length === 0) {

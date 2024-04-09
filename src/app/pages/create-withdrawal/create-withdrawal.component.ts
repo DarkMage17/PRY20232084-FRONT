@@ -11,13 +11,14 @@ import { ProductMovementDetailService } from 'src/app/services/product-movement-
 import { ProductService } from 'src/app/services/product.service';
 import { RawMaterialMovementDetailService } from 'src/app/services/raw-material-movement-detail.service';
 import { RawMaterialService } from 'src/app/services/raw-material.service';
+import { SharedDataService } from 'src/app/services/shared-data.service';
 
 @Component({
-  selector: 'app-create-movements',
-  templateUrl: './create-movements.component.html',
-  styleUrls: ['./create-movements.component.scss'],
+  selector: 'app-create-withdrawal',
+  templateUrl: './create-withdrawal.component.html',
+  styleUrls: ['./create-withdrawal.component.scss']
 })
-export class CreateMovementsComponent implements OnInit {
+export class CreateWithdrawalComponent implements OnInit{
   loggedUser: any;
   movement: CreateMovement = new CreateMovement();
   isProduct: boolean = false;
@@ -31,7 +32,10 @@ export class CreateMovementsComponent implements OnInit {
   rawMaterialMovement: createRawMaterialMovementDetail =
     new createRawMaterialMovementDetail();
 
+  Dummy: any
+
   constructor(
+    private sharedDataService: SharedDataService,
     private authService: AuthService,
     private route: ActivatedRoute,
     private router: Router,
@@ -57,6 +61,7 @@ export class CreateMovementsComponent implements OnInit {
 
   insertMovement() {
     this.movement.createdBy = this.loggedUser.id;
+    this.movement.movementType = false;
     this.movementService.createMovement(this.movement).subscribe(
       (datos: any) => {
         console.log(datos);
@@ -69,7 +74,7 @@ export class CreateMovementsComponent implements OnInit {
             .createProductMovementDetail(this.productMovement)
             .subscribe(
               () => {
-                this.router.navigate(['income']);
+                this.router.navigate(['withdrawal']);
               },
               (error: any) => {
                 console.error(error);
@@ -83,7 +88,27 @@ export class CreateMovementsComponent implements OnInit {
             .createRawMaterialMovementDetail(this.rawMaterialMovement)
             .subscribe(
               () => {
-                this.router.navigate(['income']);
+                let calc: number = this.quantity / 100;
+                let checked: number = Math.floor(calc);
+                switch (this.selectedRawMaterialId) {
+                  case 9:
+                    this.Dummy.telaSeda = this.Dummy.telaSeda - checked;
+                    this.sharedDataService.setSharedObject(this.Dummy);
+                    break;
+                  case 10:
+                    this.Dummy.telaLino = this.Dummy.telaLino - checked;
+                    this.sharedDataService.setSharedObject(this.Dummy);
+                    break;
+                  case 11:
+                    this.Dummy.telaEncaje = this.Dummy.telaEncaje - checked;
+                    this.sharedDataService.setSharedObject(this.Dummy);
+                    break;
+                  case 13:
+                    this.Dummy.telaAlgodon = this.Dummy.telaAlgodon - checked;
+                    this.sharedDataService.setSharedObject(this.Dummy);
+                    break;
+                }
+                this.router.navigate(['withdrawal']);
               },
               (error: any) => {
                 console.error(error);
@@ -124,6 +149,6 @@ export class CreateMovementsComponent implements OnInit {
   }
 
   goBack() {
-    this.router.navigate(['income']);
+    this.router.navigate(['withdrawal']);
   }
 }
