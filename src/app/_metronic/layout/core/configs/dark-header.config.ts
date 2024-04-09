@@ -19,7 +19,7 @@ export const DarkHeaderConfig: ILayout = {
     },
     header: {
       componentName: 'header',
-      display: true,
+      display: false,
       default: {
         container: 'fluid',
         containerClass: 'd-flex align-items-stretch justify-content-between',
@@ -102,7 +102,7 @@ export const DarkHeaderConfig: ILayout = {
     },
     footer: {
       componentName: 'footer',
-      display: true,
+      display: false,
       container: 'fluid',
       containerClass:
         'd-flex flex-column flex-md-row flex-center flex-md-stack py-3',

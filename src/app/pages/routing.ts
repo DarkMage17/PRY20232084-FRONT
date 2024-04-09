@@ -26,15 +26,8 @@ import { WithdrawalComponent } from './withdrawal/withdrawal.component';
 
 const Routing: Routes = [
   {
-    path: 'dashboard',
-    loadChildren: () =>
-      import('./dashboard/dashboard.module').then((m) => m.DashboardModule),
-    canActivate: [AuthGuard]
-  },
-  {
-    path: 'builder',
-    loadChildren: () =>
-      import('./builder/builder.module').then((m) => m.BuilderModule),
+    path: "dashboard",
+    loadChildren: () => import("./dashboard/dashboard.module").then(m => m.DashboardModule),
     canActivate: [AuthGuard]
   },
   {
@@ -129,10 +122,12 @@ const Routing: Routes = [
   },
   {
     path: 'register',
+    data: { layout: "dark-header" }, // Set the layout for the dashboard page
     component: CreateUserComponent
   },
   {
     path: 'login',
+    data: { layout: "dark-header" }, // Set the layout for the dashboard page
     component: LoginComponent
   },
   {
