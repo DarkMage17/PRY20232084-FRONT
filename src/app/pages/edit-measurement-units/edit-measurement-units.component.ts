@@ -92,7 +92,7 @@ export class EditMeasurementUnitsComponent implements OnInit {
 
   sendSuccess(): void {
     Swal.fire(
-      'Edicion exitosa',
+      'Edición exitosa',
       'La unidad de medida se editó exitosamente',
       'success'
     );
