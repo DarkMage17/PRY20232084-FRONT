@@ -21,6 +21,20 @@ export class CreateProductComponent implements OnInit {
   createProductForm: FormGroup;
   loggedUser: any;
 
+  items: any[] = [
+    { name: 'Item 1', value: 10 },
+    { name: 'Item 2', value: 20 },
+    { name: 'Item 3', value: 30 }
+  ];
+  inputValue: number;
+  materialArray: any[] = [];
+  
+
+  updateValue(event: any) {
+    this.inputValue = event.target.value;
+    // Aquí puedes implementar lógica adicional si necesitas actualizar la lista dinámicamente
+  }
+
   constructor(
     private authService: AuthService,
     private route: ActivatedRoute,
@@ -57,12 +71,21 @@ export class CreateProductComponent implements OnInit {
 
   createForm(): void {
     this.createProductForm = this.formBuilder.group({
-      name: ['', [Validators.required, Validators.pattern('[a-zA-Z0-9. ]*')]],
-      description: ['', [Validators.required, Validators.pattern('[a-zA-Z0-9., ]*')]],
+      name: ['', [Validators.required, Validators.pattern("[a-zA-Z0-9. áéíóúÁÉÍÓÚ]*")]],
+      description: ['', [Validators.required, Validators.pattern("[a-zA-Z0-9., áéíóúÁÉÍÓÚ]*")]],
       stock: ['', [Validators.required]],
       size_ID: ['', [Validators.required]],
       style_ID: ['', [Validators.required]]
     });
+  }
+
+  // Función para agregar un nuevo material al array
+  addMaterial() {
+    this.materialArray.push({
+      materialId: this.createProductForm.value.MaterialsId,
+      quantity: this.inputValue
+    });
+    this.inputValue = 0; // Limpiar el valor de entrada después de agregar
   }
 
   get formControls() {

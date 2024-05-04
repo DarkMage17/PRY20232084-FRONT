@@ -11,7 +11,7 @@ import Swal from 'sweetalert2';
 @Component({
   selector: 'app-create-raw-material',
   templateUrl: './create-raw-material.component.html',
-  styleUrls: ['./create-raw-material.component.scss']
+  styleUrls: ['./create-raw-material.component.scss'],
 })
 export class CreateRawMaterialComponent implements OnInit {
   createRawMaterial: createRawMaterial = new createRawMaterial();
@@ -29,17 +29,29 @@ export class CreateRawMaterialComponent implements OnInit {
     private cdr: ChangeDetectorRef
   ) {
     this.form = this.formBuilder.group({
-      name: ['', [Validators.required, Validators.pattern('[a-zA-Z0-9. ]*')]],
-      brandName: ['', [Validators.required, Validators.pattern('[a-zA-Z0-9. ]*')]],
-      color: ['', [Validators.required, Validators.pattern('[a-zA-Z0-9. ]*')]],
-      description: ['', [Validators.required, Validators.pattern('[a-zA-Z0-9., ]*')]],
-      quantity: ['',[]],
-      measurementUnit_ID: ['',[]],
+      name: [
+        '',
+        [Validators.required, Validators.pattern("[a-zA-Z0-9. áéíóúÁÉÍÓÚ]*")],
+      ],
+      brandName: [
+        '',
+        [Validators.required, Validators.pattern("[a-zA-Z0-9. áéíóúÁÉÍÓÚ]*")],
+      ],
+      color: [
+        '',
+        [Validators.required, Validators.pattern("[a-zA-Z0-9. áéíóúÁÉÍÓÚ]*")],
+      ],
+      description: [
+        '',
+        [Validators.required, Validators.pattern("[a-zA-Z0-9., áéíóúÁÉÍÓÚ]*")],
+      ],
+      stock: ['', [Validators.required]],
+      measurementUnit_ID: ['', [Validators.required]],
     });
   }
 
   ngOnInit(): void {
-    this.authService.currentUser.subscribe(x => {
+    this.authService.currentUser.subscribe((x) => {
       this.loggedUser = x;
       if (!this.loggedUser || Object.keys(this.loggedUser).length === 0) {
         this.router.navigate(['login']);
@@ -51,13 +63,12 @@ export class CreateRawMaterialComponent implements OnInit {
 
   insertRawMaterial(): void {
     this.createRawMaterial.createdBy = this.loggedUser.id;
-    this.rawMaterialService.createRawMaterial(this.createRawMaterial)
-      .subscribe(
-        datos => {
-          this.router.navigate(['raw-materials']);
-        },
-        (error: any) => console.log(error)
-      );
+    this.rawMaterialService.createRawMaterial(this.createRawMaterial).subscribe(
+      (datos) => {
+        this.router.navigate(['raw-materials']);
+      },
+      (error: any) => console.log(error)
+    );
   }
 
   onSubmit(): void {
@@ -71,19 +82,23 @@ export class CreateRawMaterialComponent implements OnInit {
   }
 
   loadData(): void {
-    this.measurementService.getMeasurementUnits().subscribe(
-      rawMaterialsResponse => {
+    this.measurementService
+      .getMeasurementUnits()
+      .subscribe((rawMaterialsResponse) => {
         this.measurementUnits = rawMaterialsResponse;
-      }
-    );
+      });
   }
 
   sendRequired(): void {
     Swal.fire('Error', 'Complete los campos requeridos', 'error');
   }
 
-  sendSuccess(): void{
-    Swal.fire('Registro exitoso', 'La materia prima se registró exitosamente', 'success');
+  sendSuccess(): void {
+    Swal.fire(
+      'Registro exitoso',
+      'La materia prima se registró exitosamente',
+      'success'
+    );
   }
 
   goBack(): void {

@@ -3,30 +3,31 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ProductStyleService {
-  private baseURL= 'http://localhost:16065/api/ProductStyles';
+  private baseURL =
+    'https://inventorysystemtesis.rj.r.appspot.com/api/ProductStyles';
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
-  getProductStyles(): Observable<any>{
+  getProductStyles(): Observable<any> {
     return this.http.get(`${this.baseURL}`);
   }
 
-  getProductStyleById(id: number): Observable<any>{
+  getProductStyleById(id: number): Observable<any> {
     return this.http.get(`${this.baseURL}/${id}`);
   }
 
-  createProductStyle(productStyle: Object): Observable<Object>{
+  createProductStyle(productStyle: Object): Observable<Object> {
     return this.http.post(`${this.baseURL}`, productStyle);
   }
 
-  updateProductStyle(id: number, productStyle: Object): Observable<Object>{
+  updateProductStyle(id: number, productStyle: Object): Observable<Object> {
     return this.http.put(`${this.baseURL}/${id}`, productStyle);
   }
 
-  deleteProductStyle(id: number): Observable<any>{
+  deleteProductStyle(id: number): Observable<any> {
     return this.http.delete(`${this.baseURL}/${id}`);
   }
 }

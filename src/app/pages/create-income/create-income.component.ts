@@ -1,5 +1,6 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CreateMovement } from 'src/app/models/CreateMovement';
 import { createProductMovementDetail } from 'src/app/models/CreateProductMovementDetail';
 import { createRawMaterialMovementDetail } from 'src/app/models/CreateRawMaterialMovementDetail';
@@ -11,7 +12,6 @@ import { ProductMovementDetailService } from 'src/app/services/product-movement-
 import { ProductService } from 'src/app/services/product.service';
 import { RawMaterialMovementDetailService } from 'src/app/services/raw-material-movement-detail.service';
 import { RawMaterialService } from 'src/app/services/raw-material.service';
-import { SharedDataService } from 'src/app/services/shared-data.service';
 
 @Component({
   selector: 'app-create-income',
@@ -20,7 +20,7 @@ import { SharedDataService } from 'src/app/services/shared-data.service';
 })
 export class CreateIncomeComponent implements OnInit {
   loggedUser: any;
-  movement: CreateMovement = new CreateMovement();
+  movementForm: FormGroup;
   isProduct: boolean = false;
   products: Product[] = [];
   rawMaterials: RawMaterial[] = [];
@@ -32,10 +32,7 @@ export class CreateIncomeComponent implements OnInit {
   rawMaterialMovement: createRawMaterialMovementDetail =
     new createRawMaterialMovementDetail();
 
-  Dummy: any;
-
   constructor(
-    private sharedDataService: SharedDataService,
     private authService: AuthService,
     private route: ActivatedRoute,
     private router: Router,
@@ -44,10 +41,15 @@ export class CreateIncomeComponent implements OnInit {
     private rawMaterialService: RawMaterialService,
     private productMovementDetailService: ProductMovementDetailService,
     private rawMaterialMovementDetailService: RawMaterialMovementDetailService,
-    private cdr: ChangeDetectorRef
-  ) {}
+    private cdr: ChangeDetectorRef,
+    private formBuilder: FormBuilder
+  ) {
+    this.movementForm = this.formBuilder.group({
+      quantity: ['', Validators.required],
+    });
+  }
+
   ngOnInit(): void {
-    this.Dummy = this.sharedDataService.getSharedObject();
     this.authService.currentUser.subscribe((x) => {
       this.loggedUser = x;
       if (!this.loggedUser || Object.keys(this.loggedUser).length === 0) {
@@ -61,9 +63,9 @@ export class CreateIncomeComponent implements OnInit {
   }
 
   insertMovement() {
-    this.movement.createdBy = this.loggedUser.id;
-    this.movement.movementType = true;
-    this.movementService.createMovement(this.movement).subscribe(
+    const movementData = this.movementForm.value;
+    movementData.createdBy = this.loggedUser.id;
+    this.movementService.createMovement(movementData).subscribe(
       (datos: any) => {
         console.log(datos);
         if (this.isProduct) {
@@ -89,26 +91,6 @@ export class CreateIncomeComponent implements OnInit {
             .createRawMaterialMovementDetail(this.rawMaterialMovement)
             .subscribe(
               () => {
-                let calc: number = this.quantity / 100;
-                let checked: number = Math.floor(calc);
-                switch (this.selectedRawMaterialId) {
-                  case 9:
-                    this.Dummy.telaSeda = this.Dummy.telaSeda + checked;
-                    this.sharedDataService.setSharedObject(this.Dummy);
-                    break;
-                  case 10:
-                    this.Dummy.telaLino = this.Dummy.telaLino + checked;
-                    this.sharedDataService.setSharedObject(this.Dummy);
-                    break;
-                  case 11:
-                    this.Dummy.telaEncaje = this.Dummy.telaEncaje + checked;
-                    this.sharedDataService.setSharedObject(this.Dummy);
-                    break;
-                  case 13:
-                    this.Dummy.telaAlgodon = this.Dummy.telaAlgodon + checked;
-                    this.sharedDataService.setSharedObject(this.Dummy);
-                    break;
-                }
                 this.router.navigate(['income']);
               },
               (error: any) => {
@@ -126,6 +108,8 @@ export class CreateIncomeComponent implements OnInit {
   loadData(): void {
     this.productService.getProducts().subscribe((productsResponse) => {
       this.products = productsResponse;
+      console.log("aaaaaaaaaaa")
+      console.log(productsResponse)
       this.cdr.detectChanges();
     });
     this.rawMaterialService
@@ -138,14 +122,6 @@ export class CreateIncomeComponent implements OnInit {
 
   onRadioChange(value: boolean) {
     this.isProduct = value;
-    switch (this.isProduct) {
-      case true:
-        this.movement.registerType = false;
-        break;
-      case false:
-        this.movement.registerType = true;
-        break;
-    }
     this.cdr.detectChanges();
   }
 

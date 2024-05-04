@@ -18,8 +18,6 @@ import {
 import { ActivatedRoute, Router } from '@angular/router';
 import { RawMaterialService } from 'src/app/services/raw-material.service';
 import { RawMaterial } from 'src/app/models/RawMaterial';
-import { SharedDataService } from 'src/app/services/shared-data.service';
-import { Dummy } from 'src/app/models/Dummy';
 
 export type ChartOptions = {
   series: ApexAxisChartSeries;
@@ -94,7 +92,6 @@ export class DashboardComponent implements OnInit {
   Dummy: any;
   
   constructor(
-    private sharedDataService: SharedDataService,
     private authService: AuthService,
     private rawMaterialService: RawMaterialService,
     private cdr: ChangeDetectorRef,
@@ -187,11 +184,6 @@ export class DashboardComponent implements OnInit {
 
 
   ngOnInit(): void {
-    this.Dummy = this.sharedDataService.getSharedObject();
-    this.telaAlgodonPrediccion.push(this.Dummy.telaAlgodon)
-    this.telaLinoPrediccion.push(this.Dummy.telaLino)
-    this.telaEncajePrediccion.push(this.Dummy.telaEncaje)
-    this.telaSedaPrediccion.push(this.Dummy.telaSeda)
     this.authService.currentUser.subscribe(x => {
       this.loggedUser = x;
       if (!this.loggedUser || Object.keys(this.loggedUser).length === 0) {

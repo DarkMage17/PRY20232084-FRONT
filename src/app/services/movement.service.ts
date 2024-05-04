@@ -1,40 +1,41 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http'
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class MovementService {
-  private baseURL= 'http://localhost:16065/api/Movements';
+  private baseURL =
+    'https://inventorysystemtesis.rj.r.appspot.com/api/Movements';
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
-  getMovements(): Observable<any>{
+  getMovements(): Observable<any> {
     return this.http.get(`${this.baseURL}`);
   }
 
-  getIncomeMovements(): Observable<any>{
+  getIncomeMovements(): Observable<any> {
     return this.http.get(`${this.baseURL}/GetIncomeMovements`);
   }
 
-  getWithdrawalMovements(): Observable<any>{
+  getWithdrawalMovements(): Observable<any> {
     return this.http.get(`${this.baseURL}/GetWithdrawalMovements`);
   }
 
-  getMovement(id: number): Observable<any>{
+  getMovement(id: number): Observable<any> {
     return this.http.get(`${this.baseURL}/${id}`);
   }
 
-  createMovement(movement: Object): Observable<Object>{
+  createMovement(movement: Object): Observable<Object> {
     return this.http.post(`${this.baseURL}`, movement);
   }
 
-  updateMovement(id: number, value: any): Observable<Object>{
+  updateMovement(id: number, value: any): Observable<Object> {
     return this.http.put(`${this.baseURL}/${id}`, value);
   }
 
-  deleteMovement(id: number): Observable<any>{
+  deleteMovement(id: number): Observable<any> {
     return this.http.delete(`${this.baseURL}/${id}`);
   }
 }

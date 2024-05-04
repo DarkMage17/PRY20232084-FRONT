@@ -25,11 +25,8 @@ export class EditMeasurementUnitsComponent implements OnInit {
     private formBuilder: FormBuilder
   ) {
     this.form = this.formBuilder.group({
-      name: ['', [Validators.required, Validators.pattern('[a-zA-Z ]*')]],
-      abbreviation: [
-        '',
-        [Validators.required, Validators.pattern('[a-zA-Z. ]*')],
-      ],
+      name: ['', [Validators.required, Validators.pattern("[a-zA-Z. áéíóúÁÉÍÓÚ]*")]],
+      abbreviation: ['', [Validators.required, Validators.pattern("[a-zA-Z. áéíóúÁÉÍÓÚ]*")]]
     });
   }
 

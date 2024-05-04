@@ -28,11 +28,6 @@ import { CreateWithdrawalComponent } from './create-withdrawal/create-withdrawal
 
 const Routing: Routes = [
   {
-    path: "dashboard",
-    loadChildren: () => import("./dashboard/dashboard.module").then(m => m.DashboardModule),
-    canActivate: [AuthGuard]
-  },
-  {
     path: '',
     redirectTo: '/login',
     pathMatch: 'full',
@@ -134,7 +129,7 @@ const Routing: Routes = [
   },
   {
     path: 'dashboard',
-    component: DashboardComponent,
+    loadChildren: () => import("./dashboard/dashboard.module").then(m => m.DashboardModule),
     canActivate: [AuthGuard]
   },
   {

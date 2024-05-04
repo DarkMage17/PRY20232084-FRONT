@@ -16,6 +16,7 @@ export class EditRawMaterialComponent implements OnInit {
   editRawMaterial: createRawMaterial = new createRawMaterial(); // Consider renaming CreateProduct to Product for better clarity
   rawMaterialId: number | null = null;
   loggedUser: any;
+  isLoading: boolean = false;
 
   constructor(
     private authService: AuthService,
@@ -44,10 +45,12 @@ export class EditRawMaterialComponent implements OnInit {
   }
 
   loadData(): void {
+    this.isLoading = true;
     this.measurementService
       .getMeasurementUnits()
       .subscribe((rawMaterialsResponse) => {
         this.measurementUnits = rawMaterialsResponse;
+        this.isLoading = false;
         this.cdr.detectChanges();
       });
   }

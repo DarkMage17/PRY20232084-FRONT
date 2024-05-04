@@ -11,7 +11,6 @@ import { ProductMovementDetailService } from 'src/app/services/product-movement-
 import { ProductService } from 'src/app/services/product.service';
 import { RawMaterialMovementDetailService } from 'src/app/services/raw-material-movement-detail.service';
 import { RawMaterialService } from 'src/app/services/raw-material.service';
-import { SharedDataService } from 'src/app/services/shared-data.service';
 
 @Component({
   selector: 'app-create-withdrawal',
@@ -32,10 +31,7 @@ export class CreateWithdrawalComponent implements OnInit{
   rawMaterialMovement: createRawMaterialMovementDetail =
     new createRawMaterialMovementDetail();
 
-  Dummy: any
-
   constructor(
-    private sharedDataService: SharedDataService,
     private authService: AuthService,
     private route: ActivatedRoute,
     private router: Router,
@@ -88,26 +84,6 @@ export class CreateWithdrawalComponent implements OnInit{
             .createRawMaterialMovementDetail(this.rawMaterialMovement)
             .subscribe(
               () => {
-                let calc: number = this.quantity / 100;
-                let checked: number = Math.floor(calc);
-                switch (this.selectedRawMaterialId) {
-                  case 9:
-                    this.Dummy.telaSeda = this.Dummy.telaSeda - checked;
-                    this.sharedDataService.setSharedObject(this.Dummy);
-                    break;
-                  case 10:
-                    this.Dummy.telaLino = this.Dummy.telaLino - checked;
-                    this.sharedDataService.setSharedObject(this.Dummy);
-                    break;
-                  case 11:
-                    this.Dummy.telaEncaje = this.Dummy.telaEncaje - checked;
-                    this.sharedDataService.setSharedObject(this.Dummy);
-                    break;
-                  case 13:
-                    this.Dummy.telaAlgodon = this.Dummy.telaAlgodon - checked;
-                    this.sharedDataService.setSharedObject(this.Dummy);
-                    break;
-                }
                 this.router.navigate(['withdrawal']);
               },
               (error: any) => {

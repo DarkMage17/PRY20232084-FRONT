@@ -95,6 +95,7 @@ export class RawMaterialsComponent implements OnInit {
   }
 
   goEdit(id: number) {
+    this.isLoading = true;
     this.router.navigate([`raw-materials/edit/${id}`]);
   }
 

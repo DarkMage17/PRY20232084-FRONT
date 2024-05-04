@@ -5,13 +5,13 @@
 // Table
 .table:not(.table-bordered) {
 	// Fix for BS 5.1.2 update
-	& > :not(:first-child) {
-    	border-color: transparent;
-		border-width: 0;
-		border-style: none;
-	}
+	*:not(:first-child) {
+        border-color: transparent;
+        border-width: 0;
+        border-style: none;
+    }
 	
-	>:not(:last-child)>:last-child>* {
+	*:not(:last-child){
 		border-bottom-color: inherit;
 	}
 

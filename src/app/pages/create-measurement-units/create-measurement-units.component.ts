@@ -14,7 +14,6 @@ import Swal from 'sweetalert2';
 export class CreateMeasurementUnitsComponent implements OnInit {
   createMeasurementUnit: CreateMeasurementUnit = new CreateMeasurementUnit();
   loggedUser: any;
-
   form: FormGroup;
 
   constructor(
@@ -26,8 +25,8 @@ export class CreateMeasurementUnitsComponent implements OnInit {
     private cdr: ChangeDetectorRef
   ) {
     this.form = this.formBuilder.group({
-      name: ['', [Validators.required, Validators.pattern('[a-zA-Z ]*')]],
-      abbreviation: ['', [Validators.required, Validators.pattern('[a-zA-Z. ]*')]]
+      name: ['', [Validators.required, Validators.pattern("[a-zA-Z. áéíóúÁÉÍÓÚ]*")]],
+      abbreviation: ['', [Validators.required, Validators.pattern("[a-zA-Z. áéíóúÁÉÍÓÚ]*")]]
     });
   }
 

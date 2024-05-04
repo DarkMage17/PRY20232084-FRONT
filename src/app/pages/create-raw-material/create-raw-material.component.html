@@ -30,8 +30,11 @@
     </div>
 
     <div class="form-group col-md-12">
-      <label for="quantity">CANTIDAD</label>
-      <input type="number" class="form-control" id="quantity" formControlName="quantity" placeholder="1" min="1" />
+      <label for="stock">CANTIDAD</label>
+      <input type="number" class="form-control" id="stock" formControlName="stock" placeholder="1" min="1" />
+      <div *ngIf="form.get('stock')?.invalid && (form.get('stock')?.dirty || form.get('stock')?.touched)" class="text-danger">
+        <div *ngIf="form.get('stock')?.errors?.required">La cantidad es requerida.</div>
+      </div>
     </div>
 
     <div class="form-group">
@@ -39,6 +42,9 @@
       <select class="form-control" formControlName="measurementUnit_ID">
         <option *ngFor="let measurementUnit of measurementUnits" [value]="measurementUnit.id">{{ measurementUnit.name }}</option>
       </select>
+      <div *ngIf="form.get('measurementUnit_ID')?.invalid && (form.get('measurementUnit_ID')?.dirty || form.get('measurementUnit_ID')?.touched)" class="text-danger">
+        <div *ngIf="form.get('measurementUnit_ID')?.errors?.required">La unidad de medida es requerida.</div>
+      </div>
     </div>
 
     <div class="form-group col-md-12">

@@ -36,8 +36,8 @@ export class CreateProductStyleComponent implements OnInit {
 
   initializeForm(): void {
     this.form = this.formBuilder.group({
-      name: ['', [Validators.required, Validators.pattern('[a-zA-Z0-9. ]*')]],
-      description: ['', [Validators.required, Validators.pattern('[a-zA-Z0-9., ]*')]]
+      name: ['', [Validators.required, Validators.pattern("[a-zA-Z0-9. áéíóúÁÉÍÓÚ]*")]],
+      description: ['', [Validators.required, Validators.pattern("[a-zA-Z0-9., áéíóúÁÉÍÓÚ]*")]]
     });
   }
 
