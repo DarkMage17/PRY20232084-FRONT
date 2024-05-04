@@ -18,6 +18,7 @@ import {
 import { ActivatedRoute, Router } from '@angular/router';
 import { RawMaterialService } from 'src/app/services/raw-material.service';
 import { RawMaterial } from 'src/app/models/RawMaterial';
+import { DashboardService } from 'src/app/services/dashboard.service';
 
 export type ChartOptions = {
   series: ApexAxisChartSeries;
@@ -40,64 +41,57 @@ export type ChartOptions = {
 })
 export class DashboardComponent implements OnInit {
   rawMaterials: RawMaterial[] = [];
+  name: string;
+  isLoading: boolean = true;
+  selectedRawMaterial: any;
 
   @ViewChild('chart') chart: ChartComponent;
   public chartOptions: Partial<ChartOptions>;
 
-  telaAlgodonPrediccion: number[] = [
-    97, 253, 443, 518, 505, 222, 218, 440, 224, 437, 218, 206, 94, 504, 395,
-    428, 371, 475, 391, 286,
-  ];
-  telaAlgodonConsumoReal: number[] = [
-    71, 278, 430, 510, 491, 244, 219, 450, 244, 443, 236, 233, 112, 491, 400,
-    424, 391, 470, 395, 282,
-  ];
-  telaSedaPrediccion: number[] = [
-    99, 116, 458, 522, 472, 498, 224, 117, 297, 284, 424, 410, 290, 173, 246,
-    187, 311, 272, 240, 404,
-  ];
-  telaSedaConsumoReal: number[] = [
-    94, 92, 445, 510, 450, 493, 220, 85, 311, 279, 430, 420, 309, 167, 245, 170,
-    353, 280, 232, 397,
-  ];
-  telaLinoPrediccion: number[] = [
-    238, 302, 109, 182, 406, 164, 131, 355, 323, 242, 150, 414, 302, 111, 126,
-    236, 500, 420, 445, 236,
-  ];
-  telaLinoConsumoReal: number[] = [
-    214, 301, 65, 176, 395, 152, 118, 371, 333, 248, 137, 410, 330, 79, 116,
-    217, 504, 427, 440, 268,
-  ];
-  telaEncajePrediccion: number[] = [
-    328, 469, 141, 143, 365, 290, 206, 239, 192, 494, 119, 167, 355, 121, 172,
-    386, 108, 143, 378, 411,
-  ];
-  telaEncajeConsumoReal: number[] = [
-    333, 458, 159, 143, 386, 303, 216, 242, 222, 496, 140, 168, 391, 118, 167,
-    397, 98, 152, 389, 423,
-  ];
-
   series: any[] = [
     {
-      name: 'Predicción de consumo de tela de algodón',
-      data: this.telaAlgodonPrediccion,
+      name: 'Predicción',
+      data: [0, 0, 0, 0, 0, 0, 0],
     },
     {
-      name: 'Consumo de tela de algodón real',
-      data: this.telaAlgodonConsumoReal,
+      name: 'Consumo real',
+      data: [0, 0, 0, 0, 0, 0],
     },
   ];
-  selectedData: string = 'Tela de algodón';
   loggedUser: any;
-  Dummy: any;
-  
+
   constructor(
+    private dashboardService: DashboardService,
     private authService: AuthService,
     private rawMaterialService: RawMaterialService,
     private cdr: ChangeDetectorRef,
     private route: ActivatedRoute,
     private router: Router
-  ) {
+  ) {}
+
+  ngOnInit(): void {
+    this.isLoading = true;
+    let today = new Date();
+    let year = today.getFullYear();
+    let month = today.getMonth() + 1;
+    let categories = [];
+
+    for (let i = 0; i < 7; i++) {
+      let currentMonth = month - i;
+      let currentYear = year;
+
+      if (currentMonth <= 0) {
+        currentMonth += 12;
+        currentYear--;
+      }
+
+      let stringMonth = this.convertMonth(currentMonth);
+      let dateString = `${stringMonth} - ${currentYear}`;
+      categories.push(dateString);
+    }
+
+    categories.reverse();
+
     this.chartOptions = {
       series: this.series,
       chart: {
@@ -124,7 +118,7 @@ export class DashboardComponent implements OnInit {
         dashArray: [8, 0],
       },
       title: {
-        text: 'Histórico vs Predicción',
+        text: 'HISTÓRICO VS PREDICCIÓN',
         align: 'center',
       },
       grid: {
@@ -138,31 +132,9 @@ export class DashboardComponent implements OnInit {
         size: 1,
       },
       xaxis: {
-        categories: [
-          'Septiembre - 2022',
-          'Octubre - 2022',
-          'Noviembre - 2022',
-          'Diciembre - 2022',
-          'Enero - 2023',
-          'Febrero - 2023',
-          'Marzo - 2023',
-          'Abril - 2023',
-          'Mayo - 2023',
-          'Junio - 2023',
-          'Julio - 2023',
-          'Agosto - 2023',
-          'Septiembre - 2023',
-          'Octubre - 2023',
-          'Noviembre - 2023',
-          'Diciembre - 2023',
-          'Enero - 2024',
-          'Febrero - 2024',
-          'Marzo - 2024',
-          'Abril - 2024',
-          'Mayo - 2024',
-        ],
+        categories: categories,
         title: {
-          text: 'FECHA',
+          text: 'MESES',
         },
       },
       yaxis: {
@@ -180,11 +152,8 @@ export class DashboardComponent implements OnInit {
         offsetX: -5,
       },
     };
-  }
 
-
-  ngOnInit(): void {
-    this.authService.currentUser.subscribe(x => {
+    this.authService.currentUser.subscribe((x) => {
       this.loggedUser = x;
       if (!this.loggedUser || Object.keys(this.loggedUser).length === 0) {
         this.router.navigate(['login']);
@@ -192,64 +161,7 @@ export class DashboardComponent implements OnInit {
         this.loadRawMaterials();
       }
     });
-  }
-
-
-
-  updateChart(): void {
-    switch (this.selectedData) {
-      case 'Tela de algodón':
-        this.series = [
-          {
-            name: 'Predicción de consumo de tela de algodón',
-            data: this.telaAlgodonPrediccion,
-          },
-          {
-            name: 'Consumo de tela de algodón real',
-            data: this.telaAlgodonConsumoReal,
-          },
-        ];
-        break;
-      case 'Tela de seda':
-        this.series = [
-          {
-            name: 'Predicción de consumo de tela de seda',
-            data: this.telaSedaPrediccion,
-          },
-          {
-            name: 'Consumo de tela de seda real',
-            data: this.telaSedaConsumoReal,
-          },
-        ];
-        break;
-      case 'Tela de lino':
-        this.series = [
-          {
-            name: 'Predicción de consumo de tela de lino',
-            data: this.telaLinoPrediccion,
-          },
-          {
-            name: 'Consumo de tela de lino real',
-            data: this.telaLinoConsumoReal,
-          },
-        ];
-        break;
-      case 'Tela de encaje':
-        this.series = [
-          {
-            name: 'Predicción de consumo de tela de encaje',
-            data: this.telaEncajePrediccion,
-          },
-          {
-            name: 'Consumo de tela de encaje real',
-            data: this.telaEncajeConsumoReal,
-          },
-        ];
-        break;
-      default:
-        break;
-    }
-    this.chartOptions.series = this.series;
+    this.cdr.detectChanges();
   }
 
   loadRawMaterials(): void {
@@ -257,7 +169,119 @@ export class DashboardComponent implements OnInit {
       .getRawMaterials()
       .subscribe((rawMaterialsResponse) => {
         this.rawMaterials = rawMaterialsResponse;
+        this.name = this.rawMaterials[0].name;
+        this.updateName(this.rawMaterials[0].name);
+        this.selectedRawMaterial = this.rawMaterials[0];
         this.cdr.detectChanges();
+
+        // Move the logic that depends on this.name here
+        let today = new Date();
+        let year = today.getFullYear();
+        let month = today.getMonth() + 1;
+        let convertedMonth: string = this.convertMonth(month);
+
+        let body = {
+          tipo_de_materia_prima: this.name,
+          mes_de_consumo: convertedMonth,
+          año: year,
+        };
+
+        this.dashboardService.lastMonths(body).subscribe((predictResponse) => {
+          predictResponse.results.Prediction =
+            predictResponse.results.Prediction.map(function (num: number) {
+              return Math.round(num);
+            });
+          this.updateChart(
+            this.name,
+            predictResponse.results.Real,
+            predictResponse.results.Prediction
+          );
+        });
       });
+  }
+
+  updateChart(baseName: string, real: number[], predict: number[]): void {
+    this.series = [
+      {
+        name: 'Predicción de consumo de ' + baseName,
+        data: predict,
+      },
+      {
+        name: 'Consumo real de ' + baseName,
+        data: real,
+      },
+    ];
+    this.chartOptions.series = this.series;
+    this.isLoading = false;
+    this.cdr.detectChanges();
+  }
+
+  convertMonth(month: number): string {
+    switch (month) {
+      case 1:
+        return 'ENERO';
+      case 2:
+        return 'FEBRERO';
+      case 3:
+        return 'MARZO';
+      case 4:
+        return 'ABRIL';
+      case 5:
+        return 'MAYO';
+      case 6:
+        return 'JUNIO';
+      case 7:
+        return 'JULIO';
+      case 8:
+        return 'AGOSTO';
+      case 9:
+        return 'SEPTIEMBRE';
+      case 10:
+        return 'OCTUBRE';
+      case 11:
+        return 'NOVIEMBRE';
+      case 12:
+        return 'DICIEMBRE';
+      default:
+        return 'MAYO';
+    }
+  }
+
+  updateName(selectedName: string) {
+    this.name = selectedName;
+    this.cdr.detectChanges();
+  }
+
+  onRawMaterialChange() {
+    this.isLoading = true;
+
+    let today = new Date();
+    let year = today.getFullYear();
+    let month = today.getMonth() + 1;
+    let convertedMonth: string = this.convertMonth(month);
+
+    let body = {
+      tipo_de_materia_prima: this.selectedRawMaterial, // Aquí asignamos solo el nombre
+      mes_de_consumo: convertedMonth,
+      año: year,
+    };
+
+    console.log('Selected raw material:', this.selectedRawMaterial);
+    let materialName = this.selectedRawMaterial;
+    console.log('Material name:', materialName);
+
+    this.dashboardService.lastMonths(body).subscribe((predictResponse) => {
+      predictResponse.results.Prediction =
+        predictResponse.results.Prediction.map((num: number) =>
+          Math.round(num)
+        );
+      this.updateChart(
+        materialName,
+        predictResponse.results.Real,
+        predictResponse.results.Prediction
+      );
+      this.isLoading = false;
+      this.cdr.detectChanges();
+    });
   }
 }
