@@ -1,3 +1,10 @@
+<div *ngIf="isLoading" class="text-center loading-overlay">
+  <div class="spinner-loader flex-column">
+    <span class="spinner-border text-primary" role="status"></span>
+</div>
+<span class="text-muted fs-6 fw-semibold mt-5">Cargando...</span>
+</div>
+
 <div>
     <form
       class="text-center border border-light p-5 col-lg-6 offset-lg-3"

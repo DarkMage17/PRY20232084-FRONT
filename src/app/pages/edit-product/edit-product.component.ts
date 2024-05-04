@@ -19,6 +19,7 @@ export class EditProductComponent implements OnInit {
   editProduct: CreateProduct = new CreateProduct(); // Consider renaming CreateProduct to Product for better clarity
   productId: number | null = null;
   loggedUser: any;
+  isLoading: boolean = false;
 
   constructor(
     private authService: AuthService,
@@ -55,16 +56,18 @@ export class EditProductComponent implements OnInit {
     this.productSizeService.getProductSizes().subscribe(
       productSizesResponse => {
         this.productSizes = productSizesResponse;
+        this.isLoading = false
         this.cdr.detectChanges();
       }
       );
   }
 
   loadProductDetails(productId: number): void {
+    this.isLoading = true
     this.productService.getProductById(productId).subscribe(
       product => {
         this.editProduct = product;
-        console.log(this.editProduct);
+        this.isLoading = false
         this.cdr.detectChanges();
       }
     );

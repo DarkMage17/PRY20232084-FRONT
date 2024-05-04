@@ -16,6 +16,7 @@ export class EditMeasurementUnitsComponent implements OnInit {
   measurementUnitId: number | null = null;
   loggedUser: any;
   form: FormGroup;
+  isLoading: boolean = true;
 
   constructor(
     private authService: AuthService,
@@ -38,13 +39,16 @@ export class EditMeasurementUnitsComponent implements OnInit {
       } else {
         this.measurementUnitId = Number(this.route.snapshot.paramMap.get('id'));
         if (this.measurementUnitId) {
+          this.isLoading = true
           this.loadMeasurementUnitDetails(this.measurementUnitId);
+          this.isLoading = false
         }
       }
     });
   }
 
   loadMeasurementUnitDetails(measurementUnitId: number): void {
+    this.isLoading = true
     this.measurementService
       .getMeasurementUnitById(measurementUnitId)
       .subscribe((measurementUnit) => {
@@ -54,6 +58,7 @@ export class EditMeasurementUnitsComponent implements OnInit {
           abbreviation: this.editMeasurementUnit.abbreviation,
         });
       });
+      this.isLoading = false
   }
 
   updateMeasurementUnit(): void {

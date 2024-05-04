@@ -20,7 +20,7 @@ import { RawMaterialService } from 'src/app/services/raw-material.service';
 })
 export class CreateIncomeComponent implements OnInit {
   loggedUser: any;
-  movementForm: FormGroup;
+  movement: CreateMovement = new CreateMovement();
   isProduct: boolean = false;
   products: Product[] = [];
   rawMaterials: RawMaterial[] = [];
@@ -41,14 +41,8 @@ export class CreateIncomeComponent implements OnInit {
     private rawMaterialService: RawMaterialService,
     private productMovementDetailService: ProductMovementDetailService,
     private rawMaterialMovementDetailService: RawMaterialMovementDetailService,
-    private cdr: ChangeDetectorRef,
-    private formBuilder: FormBuilder
-  ) {
-    this.movementForm = this.formBuilder.group({
-      quantity: ['', Validators.required],
-    });
-  }
-
+    private cdr: ChangeDetectorRef
+  ) {}
   ngOnInit(): void {
     this.authService.currentUser.subscribe((x) => {
       this.loggedUser = x;
@@ -63,9 +57,9 @@ export class CreateIncomeComponent implements OnInit {
   }
 
   insertMovement() {
-    const movementData = this.movementForm.value;
-    movementData.createdBy = this.loggedUser.id;
-    this.movementService.createMovement(movementData).subscribe(
+    this.movement.createdBy = this.loggedUser.id;
+    this.movement.movementType = true;
+    this.movementService.createMovement(this.movement).subscribe(
       (datos: any) => {
         console.log(datos);
         if (this.isProduct) {
@@ -108,8 +102,6 @@ export class CreateIncomeComponent implements OnInit {
   loadData(): void {
     this.productService.getProducts().subscribe((productsResponse) => {
       this.products = productsResponse;
-      console.log("aaaaaaaaaaa")
-      console.log(productsResponse)
       this.cdr.detectChanges();
     });
     this.rawMaterialService
@@ -122,6 +114,14 @@ export class CreateIncomeComponent implements OnInit {
 
   onRadioChange(value: boolean) {
     this.isProduct = value;
+    switch (this.isProduct) {
+      case true:
+        this.movement.registerType = false;
+        break;
+      case false:
+        this.movement.registerType = true;
+        break;
+    }
     this.cdr.detectChanges();
   }
 

@@ -16,6 +16,7 @@ export class EditProductSizeComponent implements OnInit {
   productSizeId: number | null = null;
   loggedUser: any;
   form: FormGroup;
+  isLoading: boolean = true;
 
   constructor(
     private authService: AuthService,
@@ -44,6 +45,7 @@ export class EditProductSizeComponent implements OnInit {
   }
 
   loadProductSizeDetails(productSizeId: number): void {
+    this.isLoading = true
     this.productSizeService.getProductSizeById(productSizeId).subscribe(
       productSize => {
         this.editProductSize = productSize;
@@ -51,6 +53,7 @@ export class EditProductSizeComponent implements OnInit {
         this.populateForm();
       }
     );
+    this.isLoading = false
   }
 
   populateForm(): void {
