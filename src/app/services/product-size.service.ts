@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class ProductSizeService {
   private baseURL =
-    'https://inventorysystemtesis.rj.r.appspot.com/api/ProductSizes';
+    'https://backend-inventory-system.rj.r.appspot.com/api/ProductSizes';
   constructor(private http: HttpClient) {}
 
   getProductSizes(): Observable<any> {

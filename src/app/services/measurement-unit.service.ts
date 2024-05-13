@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class MeasurementUnitService {
   private baseURL =
-    'https://inventorysystemtesis.rj.r.appspot.com/api/MeasurementUnits';
+    'https://backend-inventory-system.rj.r.appspot.com/api/MeasurementUnits';
   constructor(private http: HttpClient) {}
 
   getMeasurementUnits(): Observable<any> {

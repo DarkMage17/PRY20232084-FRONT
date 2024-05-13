@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class RawMaterialMovementDetailService {
   private baseURL =
-    'https://inventorysystemtesis.rj.r.appspot.com/api/RawMaterialMovementDetails';
+    'https://backend-inventory-system.rj.r.appspot.com/api/RawMaterialMovementDetails';
 
   constructor(private http: HttpClient) {}
 

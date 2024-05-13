@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class ProductStyleService {
   private baseURL =
-    'https://inventorysystemtesis.rj.r.appspot.com/api/ProductStyles';
+    'https://backend-inventory-system.rj.r.appspot.com/api/ProductStyles';
 
   constructor(private http: HttpClient) {}
 
