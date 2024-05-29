@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { RegisterUser } from 'src/app/models/CreateUser';
 import { AuthService } from 'src/app/services/auth.service';
@@ -30,15 +30,23 @@ export class CreateUserComponent implements OnInit {
 
   ngOnInit(): void {
     this.form = this.formBuilder.group({
-      password: ['', Validators.required],
+      password: ['', [Validators.required, Validators.minLength(8)]],
       email: [
         '',
         [Validators.required, Validators.email, Validators.pattern('[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')],
       ],
-      name: ['', [Validators.required, Validators.pattern('[a-zA-Z ]*')]],
+      name: ['', [Validators.required, Validators.pattern('[a-zA-Z ]*'), this.noWhitespaceValidator()]],
       phone: ['', [Validators.required, Validators.pattern('[0-9]{9}')]],
-      enterprise: ['', [Validators.required, Validators.pattern('[a-zA-Z ]*')]],
+      enterprise: ['', [Validators.required, Validators.pattern('[a-zA-Z ]*'), this.noWhitespaceValidator()]],
     });
+  }
+  
+  noWhitespaceValidator(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const isWhitespace = (control.value || '').trim().length === 0;
+      const isValid = !isWhitespace;
+      return isValid ? null : { whitespace: true };
+    };
   }
 
   sendRequired(): void {

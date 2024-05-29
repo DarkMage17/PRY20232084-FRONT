@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class MovementService {
   private baseURL =
-    'https://backend-inventory-system.rj.r.appspot.com/api/Movements';
+    'https://backend-deploy-424302.rj.r.appspot.com/api/Movements';
 
   constructor(private http: HttpClient) {}
 

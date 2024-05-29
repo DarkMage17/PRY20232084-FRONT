@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class ProductService {
   private baseUrl =
-    'https://backend-inventory-system.rj.r.appspot.com/api/Products';
+    'https://backend-deploy-424302.rj.r.appspot.com/api/Products';
 
   constructor(private http: HttpClient) {}
 

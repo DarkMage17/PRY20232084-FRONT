@@ -10,8 +10,7 @@ import { map } from 'rxjs/operators';
 export class AuthService {
   private currentUserSubject: BehaviorSubject<any>;
   public currentUser: Observable<any>;
-  private baseUrl =
-    'https://backend-inventory-system.rj.r.appspot.com/api/Users';
+  private baseUrl = 'https://backend-deploy-424302.rj.r.appspot.com/api/Users';
 
   constructor(private http: HttpClient) {
     this.currentUserSubject = new BehaviorSubject<any>(

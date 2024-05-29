@@ -36,6 +36,7 @@
         <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"
           *ngIf="form.get('password')?.invalid && (form.get('password')?.dirty || form.get('password')?.touched)">
           <div *ngIf="form.get('password')?.errors?.required">Contraseña es requerida.</div>
+          <div *ngIf="form.get('password')?.errors?.minlength">La contraseña debe tener como mínimo 8 caracteres.</div>
         </div>
       </div>
       <div class="fv-row mb-8 fv-plugins-icon-container">
@@ -50,6 +51,7 @@
           *ngIf="form.get('name')?.invalid && (form.get('name')?.dirty || form.get('name')?.touched)">
           <div *ngIf="form.get('name')?.errors?.required">Nombre es requerido.</div>
           <div *ngIf="form.get('name')?.errors?.pattern">Nombre solo puede contener letras y espacios.</div>
+          <div *ngIf="form.get('name')?.errors?.whitespace">Debe haber al menos una letra / Nombre inválido</div>
         </div>
       </div>
       <div class="fv-row mb-8 fv-plugins-icon-container">
@@ -78,6 +80,7 @@
           *ngIf="form.get('enterprise')?.invalid && (form.get('enterprise')?.dirty || form.get('enterprise')?.touched)">
           <div *ngIf="form.get('enterprise')?.errors?.required">Nombre de empresa es requerido.</div>
           <div *ngIf="form.get('enterprise')?.errors?.pattern">Nombre de empresa solo puede contener letras y espacios.</div>
+          <div *ngIf="form.get('enterprise')?.errors?.whitespace">Debe haber al menos una letra / Nombre inválido</div>
         </div>
       </div>
       <div class="d-grid mb-10">
