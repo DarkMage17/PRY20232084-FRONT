@@ -36,9 +36,20 @@ export class CreateUserComponent implements OnInit {
         [Validators.required, Validators.email, Validators.pattern('[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')],
       ],
       name: ['', [Validators.required, Validators.pattern('[a-zA-Z ]*'), this.noWhitespaceValidator()]],
-      phone: ['', [Validators.required, Validators.pattern('[0-9]{9}')]],
+      phone: ['', [Validators.required, Validators.pattern('[0-9]{9}'), this.phoneValidator]],
       enterprise: ['', [Validators.required, Validators.pattern('[a-zA-Z ]*'), this.noWhitespaceValidator()]],
     });
+  }
+
+  phoneValidator(control: AbstractControl): ValidationErrors | null {
+    const phoneNumber = control.value;
+    
+    // Verificar si el número comienza con 0 o es igual a 000000000
+    if (phoneNumber && (phoneNumber.charAt(0) === '0' || phoneNumber === '000000000')) {
+      return { invalidPhone: true };
+    }
+    
+    return null;
   }
   
   noWhitespaceValidator(): ValidatorFn {

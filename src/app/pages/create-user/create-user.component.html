@@ -66,6 +66,7 @@
           *ngIf="form.get('phone')?.invalid && (form.get('phone')?.dirty || form.get('phone')?.touched)">
           <div *ngIf="form.get('phone')?.errors?.required">Celular es requerido.</div>
           <div *ngIf="form.get('phone')?.errors?.pattern">Celular debe contener 9 dígitos numéricos.</div>
+          <div *ngIf="form.get('phone')?.errors?.invalidPhone">El número no existe</div>
         </div>
       </div>
       <div class="fv-row mb-8 fv-plugins-icon-container">
