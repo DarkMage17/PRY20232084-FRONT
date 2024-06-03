@@ -25,7 +25,7 @@
       <input type="text" class="form-control" id="color" formControlName="color" placeholder="Color" />
       <div *ngIf="form.get('color')?.invalid && (form.get('color')?.dirty || form.get('color')?.touched)" class="text-danger">
         <div *ngIf="form.get('color')?.errors?.required">El color es requerido.</div>
-        <div *ngIf="form.get('color')?.errors?.pattern">El nombre del color solo puede contener letras, números y puntos.</div>
+        <div *ngIf="form.get('color')?.errors?.pattern">El color debe contener al menos una letra y solo puede contener letras, números y puntos.</div>
       </div>
     </div>
 

@@ -39,7 +39,7 @@ export class CreateRawMaterialComponent implements OnInit {
       ],
       color: [
         '',
-        [Validators.required, Validators.pattern("[a-zA-Z0-9. áéíóúÁÉÍÓÚ]*")],
+        [Validators.required, Validators.pattern("^(?=.*[a-zA-Z])[a-zA-Z0-9. áéíóúÁÉÍÓÚ]*$")],
       ],
       description: [
         '',
