@@ -89,7 +89,7 @@ export class EditMeasurementUnitsComponent implements OnInit {
   }
 
   sendRequired(): void {
-    Swal.fire('Error', 'Resuelva los errores en el formulario', 'error');
+    Swal.fire('Error', 'Ingresar datos válidos. Revisar el formulario', 'error');
   }
 
   sendSuccess(): void {

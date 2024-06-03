@@ -30,13 +30,18 @@
       </div>
 
       <div class="fv-row mb-8 fv-plugins-icon-container">
+        <div class="input-group">
         <input
-          type="password"
+        [type]="hidePassword ? 'password' : 'text'"
           placeholder="Contraseña"
           formControlName="password"
           autocomplete="off"
           class="form-control bg-transparent"
         />
+        <button type="button" class="btn btn-outline-secondary" (click)="togglePasswordVisibility()">
+          <i class="fa" [ngClass]="{'fa-eye': hidePassword, 'fa-eye-slash': !hidePassword}"></i>
+        </button>
+      </div>
         <div
           class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"
           *ngIf="loginForm.get('password')?.invalid && (loginForm.get('password')?.dirty || loginForm.get('password')?.touched)"

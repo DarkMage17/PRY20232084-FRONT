@@ -6,8 +6,8 @@
       <label for="name">NOMBRE</label>
       <input type="text" class="form-control" id="name" formControlName="name" placeholder="Nombre" />
       <div *ngIf="form.get('name')?.invalid && (form.get('name')?.dirty || form.get('name')?.touched)" class="text-danger">
-        <div *ngIf="form.get('name')?.errors?.required">El nombre del producto es requerido.</div>
-        <div *ngIf="form.get('name')?.errors?.pattern">El nombre del producto solo puede contener letras, números y puntos.</div>
+        <div *ngIf="form.get('name')?.errors?.required">El nombre de la materia prima es requerido.</div>
+        <div *ngIf="form.get('name')?.errors?.pattern">El nombre de la materia prima solo puede contener letras, números y puntos.</div>
       </div>
     </div>
 
@@ -34,6 +34,7 @@
       <input type="number" class="form-control" id="stock" formControlName="stock" placeholder="1" min="1" />
       <div *ngIf="form.get('stock')?.invalid && (form.get('stock')?.dirty || form.get('stock')?.touched)" class="text-danger">
         <div *ngIf="form.get('stock')?.errors?.required">La cantidad es requerida.</div>
+        <div *ngIf="form.get('stock')?.errors?.min">La cantidad debe ser mayor a 0.</div>
       </div>
     </div>
 

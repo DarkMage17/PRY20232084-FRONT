@@ -58,7 +58,7 @@ export class CreateProductStyleComponent implements OnInit {
   }
 
   sendRequired(): void {
-    Swal.fire('Error', 'Complete los campos requeridos', 'error');
+    Swal.fire('Error', 'Ingresar datos válidos. Revisar el formulario', 'error');
   }
 
   sendSuccess(): void{

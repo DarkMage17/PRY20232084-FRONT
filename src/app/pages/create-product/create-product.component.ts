@@ -73,7 +73,7 @@ export class CreateProductComponent implements OnInit {
     this.createProductForm = this.formBuilder.group({
       name: ['', [Validators.required, Validators.pattern("[a-zA-Z0-9. áéíóúÁÉÍÓÚ]*")]],
       description: ['', [Validators.required, Validators.pattern("[a-zA-Z0-9., áéíóúÁÉÍÓÚ]*")]],
-      stock: ['', [Validators.required]],
+      stock: ['', [Validators.required, Validators.min(1)]],
       size_ID: ['', [Validators.required]],
       style_ID: ['', [Validators.required]]
     });
@@ -105,7 +105,7 @@ export class CreateProductComponent implements OnInit {
   }
 
   sendRequired(): void {
-    Swal.fire('Error', 'Complete los campos requeridos', 'error');
+    Swal.fire('Error', 'Ingresar datos válidos. Revisar el formulario', 'error');
   }
 
   sendSuccess(): void{

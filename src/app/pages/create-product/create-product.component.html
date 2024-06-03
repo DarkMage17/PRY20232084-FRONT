@@ -79,7 +79,10 @@
         "
       >
         <div *ngIf="createProductForm.get('stock')?.errors?.required">
-          El stock del producto es requerido.
+          La cantidad del producto es requerido.
+        </div>
+        <div *ngIf="createProductForm.get('stock')?.errors?.min">
+          La cantidad debe ser mayor a 0.
         </div>
       </div>
     </div>

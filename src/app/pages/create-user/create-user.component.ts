@@ -1,5 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import {
+  AbstractControl,
+  FormBuilder,
+  FormGroup,
+  ValidationErrors,
+  ValidatorFn,
+  Validators,
+} from '@angular/forms';
 import { Router } from '@angular/router';
 import { RegisterUser } from 'src/app/models/CreateUser';
 import { AuthService } from 'src/app/services/auth.service';
@@ -12,6 +19,7 @@ import Swal from 'sweetalert2';
 })
 export class CreateUserComponent implements OnInit {
   form: FormGroup;
+  hidePassword = true;
   registerUser: RegisterUser = {
     email: '',
     password: '',
@@ -33,25 +41,57 @@ export class CreateUserComponent implements OnInit {
       password: ['', [Validators.required, Validators.minLength(8)]],
       email: [
         '',
-        [Validators.required, Validators.email, Validators.pattern('[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')],
+        [
+          Validators.required,
+          Validators.email,
+          Validators.pattern('[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$'),
+        ],
       ],
-      name: ['', [Validators.required, Validators.pattern('[a-zA-Z ]*'), this.noWhitespaceValidator()]],
-      phone: ['', [Validators.required, Validators.pattern('[0-9]{9}'), this.phoneValidator]],
-      enterprise: ['', [Validators.required, Validators.pattern('[a-zA-Z ]*'), this.noWhitespaceValidator()]],
+      name: [
+        '',
+        [
+          Validators.required,
+          Validators.pattern('[a-zA-Z ]*'),
+          this.noWhitespaceValidator(),
+        ],
+      ],
+      phone: [
+        '',
+        [
+          Validators.required,
+          Validators.pattern('[0-9]{9}'),
+          this.phoneValidator,
+        ],
+      ],
+      enterprise: [
+        '',
+        [
+          Validators.required,
+          Validators.pattern('[a-zA-Z ]*'),
+          this.noWhitespaceValidator(),
+        ],
+      ],
     });
   }
 
   phoneValidator(control: AbstractControl): ValidationErrors | null {
     const phoneNumber = control.value;
-    
+
     // Verificar si el número comienza con 0 o es igual a 000000000
-    if (phoneNumber && (phoneNumber.charAt(0) === '0' || phoneNumber === '000000000')) {
+    if (
+      phoneNumber &&
+      (phoneNumber.charAt(0) === '0' || phoneNumber === '000000000')
+    ) {
       return { invalidPhone: true };
     }
-    
+
     return null;
   }
-  
+
+  togglePasswordVisibility(): void {
+    this.hidePassword = !this.hidePassword;
+  }
+
   noWhitespaceValidator(): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
       const isWhitespace = (control.value || '').trim().length === 0;
@@ -61,10 +101,10 @@ export class CreateUserComponent implements OnInit {
   }
 
   sendRequired(): void {
-    Swal.fire('Error', 'Complete los campos requeridos', 'error');
+    Swal.fire('Error', 'Ingresar datos válidos. Revisar el formulario', 'error');
   }
 
-  sendSuccess(): void{
+  sendSuccess(): void {
     Swal.fire('Registro exitoso', 'Se registró exitosamente', 'success');
   }
 
@@ -79,8 +119,8 @@ export class CreateUserComponent implements OnInit {
     if (this.form.invalid) {
       this.sendRequired();
     } else {
-      this.registerUser = this.form.value
-      console.log(this.registerUser)
+      this.registerUser = this.form.value;
+      console.log(this.registerUser);
       this.register();
     }
   }

@@ -26,13 +26,18 @@
         </div>
       </div>
       <div class="fv-row mb-8 fv-plugins-icon-container">
-        <input
-          type="password"
-          placeholder="Contraseña"
-          formControlName="password"
-          autocomplete="off"
-          class="form-control bg-transparent"
-        />
+        <div class="input-group">
+          <input
+            [type]="hidePassword ? 'password' : 'text'"
+            placeholder="Contraseña"
+            formControlName="password"
+            autocomplete="off"
+            class="form-control bg-transparent"
+          />
+          <button type="button" class="btn btn-outline-secondary" (click)="togglePasswordVisibility()">
+            <i class="fa" [ngClass]="{'fa-eye': hidePassword, 'fa-eye-slash': !hidePassword}"></i>
+          </button>
+        </div>
         <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"
           *ngIf="form.get('password')?.invalid && (form.get('password')?.dirty || form.get('password')?.touched)">
           <div *ngIf="form.get('password')?.errors?.required">Contraseña es requerida.</div>

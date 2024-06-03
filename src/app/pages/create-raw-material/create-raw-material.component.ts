@@ -45,7 +45,7 @@ export class CreateRawMaterialComponent implements OnInit {
         '',
         [Validators.required, Validators.pattern("[a-zA-Z0-9., áéíóúÁÉÍÓÚ]*")],
       ],
-      stock: ['', [Validators.required]],
+      stock: ['', [Validators.required, Validators.min(1)]],
       measurementUnit_ID: ['', [Validators.required]],
     });
   }
@@ -90,7 +90,7 @@ export class CreateRawMaterialComponent implements OnInit {
   }
 
   sendRequired(): void {
-    Swal.fire('Error', 'Complete los campos requeridos', 'error');
+    Swal.fire('Error', 'Ingresar datos válidos. Revisar el formulario', 'error');
   }
 
   sendSuccess(): void {

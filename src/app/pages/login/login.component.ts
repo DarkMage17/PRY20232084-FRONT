@@ -13,6 +13,7 @@ import Swal from 'sweetalert2';
 export class LoginComponent implements OnInit {
   loggedUser: any;
   loginForm: FormGroup;
+  hidePassword = true;
 
   constructor(
     private authService: AuthService,
@@ -29,6 +30,10 @@ export class LoginComponent implements OnInit {
         this.router.navigate(['dashboard']);
       }
     });
+  }
+
+  togglePasswordVisibility(): void {
+    this.hidePassword = !this.hidePassword;
   }
 
   initializeForm(): void {
@@ -81,12 +86,13 @@ export class LoginComponent implements OnInit {
   onSubmit() {
     if (this.loginForm.invalid) {
       this.sendRequired();
+    }else{
+      this.login();
     }
-    this.login();
   }
 
   sendRequired() {
-    Swal.fire('Error', 'Complete el correo y contraseña', 'error');
+    Swal.fire('Error', 'Ingresar datos válidos. Revisar los campos', 'error');
   }
 
   goToRegister() {
