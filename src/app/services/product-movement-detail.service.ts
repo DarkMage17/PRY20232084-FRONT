@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class ProductMovementDetailService {
   private baseURL =
-    'https://backend-deploy-424302.rj.r.appspot.com/api/ProductMovementDetails';
+    'https://aerial-chimera-367203.rj.r.appspot.com/api/ProductMovementDetails';
 
   constructor(private http: HttpClient) {}
 

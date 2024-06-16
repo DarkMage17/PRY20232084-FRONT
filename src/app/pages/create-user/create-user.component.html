@@ -23,6 +23,7 @@
           *ngIf="form.get('email')?.invalid && (form.get('email')?.dirty || form.get('email')?.touched)">
           <div *ngIf="form.get('email')?.errors?.required">Correo es requerido.</div>
           <div *ngIf="form.get('email')?.errors?.pattern">Ingrese un correo electrónico válido.</div>
+          <div *ngIf="form.get('email')?.errors?.emailExists">El correo ya existe en el sistema.</div>
         </div>
       </div>
       <div class="fv-row mb-8 fv-plugins-icon-container">

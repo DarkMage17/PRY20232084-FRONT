@@ -26,7 +26,7 @@
         *ngIf="form.get('name')?.invalid && (form.get('name')?.dirty || form.get('name')?.touched)"
       >
         <div *ngIf="form.get('name')?.errors?.required">El nombre es requerido.</div>
-        <div *ngIf="form.get('name')?.errors?.pattern">El nombre solo puede contener letras, números y puntos.</div>
+        <div *ngIf="form.get('name')?.errors?.pattern">El nombre solo puede contener hasta 4 letras mayusculas juntas</div>
       </div>
     </div>
 

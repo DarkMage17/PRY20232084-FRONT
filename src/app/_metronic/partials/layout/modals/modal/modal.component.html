@@ -5,7 +5,7 @@
       <h2>{{ modalConfig.modalTitle }}</h2>
       <!--end::Modal title-->
       <!--begin::Close-->
-      <div class="btn btn-sm btn-icon btn-active-color-primary" (click)="dismiss()"
+      <div class="btn btn-sm btn-icon btn-active-color-primary" (click)="close()"
         *ngIf="modalConfig.hideDismissButton === undefined || !modalConfig.hideDismissButton()">
         <app-keenicon name="cross" class="fs-1"></app-keenicon>
         <!--end::Svg Icon-->

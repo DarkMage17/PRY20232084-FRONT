@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class RawMaterialService {
   private baseURL =
-    'https://backend-deploy-424302.rj.r.appspot.com/api/RawMaterials';
+    'https://aerial-chimera-367203.rj.r.appspot.com/api/RawMaterials';
 
   constructor(private http: HttpClient) {}
 

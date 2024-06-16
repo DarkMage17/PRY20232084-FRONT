@@ -36,7 +36,7 @@ export class CreateProductSizeComponent implements OnInit {
 
   initializeForm(): void {
     this.form = this.formBuilder.group({
-      name: ['', [Validators.required, Validators.pattern("[a-zA-Z0-9. ]*")]]
+      name: ['', [Validators.required, Validators.pattern("^[A-Z]{1,4}$")]]
     });
   }
 

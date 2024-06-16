@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {
   AbstractControl,
+  AsyncValidatorFn,
   FormBuilder,
   FormGroup,
   ValidationErrors,
@@ -8,6 +9,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { Router } from '@angular/router';
+import { Observable, catchError, map, of } from 'rxjs';
 import { RegisterUser } from 'src/app/models/CreateUser';
 import { AuthService } from 'src/app/services/auth.service';
 import Swal from 'sweetalert2';
@@ -44,8 +46,9 @@ export class CreateUserComponent implements OnInit {
         [
           Validators.required,
           Validators.email,
-          Validators.pattern('[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$'),
+          Validators.pattern('[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')
         ],
+        [this.emailExistsValidator(this.authService)] // Validador asíncrono
       ],
       name: [
         '',
@@ -90,6 +93,19 @@ export class CreateUserComponent implements OnInit {
 
   togglePasswordVisibility(): void {
     this.hidePassword = !this.hidePassword;
+  }
+
+  emailExistsValidator(authService: AuthService): AsyncValidatorFn {
+    return (control: AbstractControl): Observable<ValidationErrors | null> => {
+      if (!control.value) {
+        return of(null);
+      }
+  
+      return authService.checkEmailExists(control.value).pipe(
+        map(response => (response.exists ? { emailExists: true } : null)),
+        catchError(() => of(null)) // en caso de error, no mostrar ningún error
+      );
+    };
   }
 
   noWhitespaceValidator(): ValidatorFn {

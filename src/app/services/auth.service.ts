@@ -10,7 +10,7 @@ import { map } from 'rxjs/operators';
 export class AuthService {
   private currentUserSubject: BehaviorSubject<any>;
   public currentUser: Observable<any>;
-  private baseUrl = 'https://backend-deploy-424302.rj.r.appspot.com/api/Users';
+  private baseUrl = 'https://aerial-chimera-367203.rj.r.appspot.com/api/Users';
 
   constructor(private http: HttpClient) {
     this.currentUserSubject = new BehaviorSubject<any>(
@@ -39,6 +39,10 @@ export class AuthService {
           return user;
         })
       );
+  }
+
+  checkEmailExists(email: string): Observable<{ exists: boolean }> {
+    return this.http.get<{ exists: boolean }>(`${this.baseUrl}/checkuserexists?email=${email}`);
   }
 
   logout() {
